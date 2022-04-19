@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import LinearSVC
+from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
 
 # rate the different methods
 method = {"s": 6, 'z': 5, 'c': 4, 'g': 3, '0': 0, 'x': 0.5, 'y': 0.5}
@@ -52,19 +54,33 @@ def SVM_training(X, y):
     X_norm = scaler.fit_transform(X)
 
     # cut the data into Train set and Test set
-    train_X, test_X, train_y, test_y = train_test_split(X_norm,y, random_state=111, train_size=0.8)
+    # train_X, test_X, train_y, test_y = train_test_split(X_norm,y, random_state=111, train_size=0.8)
 
     # use SVM to predict student's performance
     SVM = LinearSVC(random_state=0, tol=1e-5)
-    SVM.fit(X=train_X, y= train_y.ravel())
+    scores = cross_val_score(SVM, X_norm, y.ravel(), cv=5, scoring='accuracy')
 
     # SVM model predict result
-    print(SVM.score(test_X, test_y.ravel()))
+    print("SVM accuracy:", np.mean(scores))
 
+
+def KNN_training(X, y):
+
+    # normalize data
+    scaler = StandardScaler()
+    X_norm = scaler.fit_transform(X)
+
+    # use SVM to predict student's performance
+    knn = KNeighborsClassifier(n_neighbors= 5)
+    scores = cross_val_score(knn, X_norm, y.ravel(), cv=5, scoring='accuracy')
+
+    # knn model predict result
+    print("knn accuracy:", np.mean(scores))
 
 def main():
     X, y = load_data("Data.csv")
     SVM_training(X, y)
+    KNN_training(X, y)
 
 
 if __name__ == '__main__':
