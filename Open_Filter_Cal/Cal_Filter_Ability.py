@@ -42,14 +42,14 @@ def rank_result(T):
 
 def mouse_control():
     Thickness_Position = [(200,195), (200,224), (200,254), (200,267), (200,290), (200,311),
-                          (200,333), (200,355), (200, 377), (200, 399), (200, 421), (200, 442)]
+                          (200,333), (200,355), (200, 377), (200, 400), (200, 422), (200, 443)]
 
-    for i in range(3):
+    for i in range(7):
         i_button = True
 
-        for j in range(9):
-            Num1 = (i+1)*12+80
-            Num2 = (j+1)*12+20
+        for j in range(7):
+            Num1 = (i+1)*5+15
+            Num2 = (j+1)*5+15
             Cont = 0
 
             for ele in Thickness_Position:
@@ -125,11 +125,13 @@ def main():
     Wavelength, T = get_data()
     Filter_Result = rank_result(T)
     print(Filter_Result)
-    print(Wavelength[301:401])
-    print(T[301:401])
-    print(len(T[301:401]))
-    print(sum(T[101:301])/len(T[101:301]))
+    Transmission = sum(T[201:301])/len(T[201:301])
+    Suppression = (sum(T[101:201])/len(T[101:201]) + sum(T[301:401])/len(T[301:401]))/2
+    Purity = Transmission - Suppression
+    Green_Score = Transmission + Purity + (1 - Suppression)
+    print(Transmission, Suppression, Purity, Green_Score)
     """
+
 
 if __name__ == '__main__':
     main()

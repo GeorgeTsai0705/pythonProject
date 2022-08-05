@@ -2,7 +2,6 @@ import random
 import time
 
 original = [random.randint(1, 300) for x in range(10)]
-print(original)
 start = time.time()
 
 for j in range(len(original)):
@@ -13,4 +12,6 @@ for j in range(len(original)):
             original[i] = original[i + 1]
             original[i + 1] = target
 
-print(original)
+print("The time used to execute this is given below")
+end = time.time()
+print(end - start)

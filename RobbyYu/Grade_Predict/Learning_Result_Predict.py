@@ -70,12 +70,20 @@ def KNN_training(X, y):
     scaler = StandardScaler()
     X_norm = scaler.fit_transform(X)
 
-    # use SVM to predict student's performance
-    knn = KNeighborsClassifier(n_neighbors= 5)
-    scores = cross_val_score(knn, X_norm, y.ravel(), cv=5, scoring='accuracy')
+    best_score = 0
+    best_neighbors = 0
+
+    for i in range(1,11):
+        # use SVM to predict student's performance
+        knn = KNeighborsClassifier(n_neighbors=i)
+        scores = cross_val_score(knn, X_norm, y.ravel(), cv=5, scoring='accuracy')
+
+        if np.mean(scores) > best_score:
+            best_score = np.mean(scores)
+            best_neighbors = i
 
     # knn model predict result
-    print("knn accuracy:", np.mean(scores))
+    print("knn accuracy:", best_score, " n_neighbors: ", best_neighbors)
 
 def main():
     X, y = load_data("Data.csv")

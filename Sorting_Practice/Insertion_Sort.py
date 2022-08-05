@@ -1,7 +1,7 @@
 import random
 import time
 
-original = [random.randint(1,30000) for x in range(2000)]
+original = [random.randint(1,3000) for x in range(30)]
 
 start = time.time()
 sorted_set = [original.pop(0)]
@@ -17,6 +17,8 @@ for j in range(len(original)):
             break
     if not inside:
         sorted_set.append(target)
+
+print(sorted_set)
 
 print("The time used to execute this is given below")
 end = time.time()

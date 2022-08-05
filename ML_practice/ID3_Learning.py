@@ -1,6 +1,7 @@
 import math
 from copy import deepcopy
 import numpy as np
+import pickle
 
 
 # import cPickle as Pickle
@@ -12,7 +13,6 @@ class ID3DTree(object):
         self.labels = []  # Store LabelSet
 
     def loadDataSet(self, path, labels):
-        recordlist = []
         # Load file content
         fp = open(path, "rb")
         content = fp.read()
@@ -20,7 +20,7 @@ class ID3DTree(object):
 
         # Change the content into 1D dataset
         rowlist = content.splitlines()
-        recordlist = [row.split("\t") for row in rowlist if row.strip()]
+        recordlist = [row.split('\t') for row in rowlist if row.strip()]
         self.dataSet = recordlist
         self.labels = labels
 
@@ -32,7 +32,8 @@ class ID3DTree(object):
         labels = deepcopy(self.labels)
         self.tree = self.buildTree(self.dataSet, labels)
 
-    def maxCat(self, catelist):
+    @staticmethod
+    def maxCate(catelist):
         items = dict([(catelist.count(i), i) for i in catelist])
         return items[max(items.keys())]
 
@@ -87,12 +88,13 @@ class ID3DTree(object):
                 prob = len(subDataSet) / float(len(dataSet))
                 newEntropy += prob * self.computeEntropy(subDataSet)
             infoGain = baseEntropy - newEntropy
-            if (infoGain > bestInfoGain):
+            if infoGain > bestInfoGain:
                 bestInfoGain = infoGain
                 bestFeature = i
         return bestFeature
 
-    def computeEntropy(self, dataSet):
+    @staticmethod
+    def computeEntropy(dataSet):
         # compute the Shannon Entropy
         data_len = float(len(dataSet))
         cateList = [data[-1] for data in dataSet]  # get the category result
@@ -105,7 +107,8 @@ class ID3DTree(object):
         return infoEntropy
 
     # Delete the data row where the feature axis is located, and return the remaining data set
-    def splitDataSet(self, dataSet, axis, value):
+    @staticmethod
+    def splitDataSet(dataSet, axis, value):
         rtnList = []
         for featVec in dataSet:
             if featVec[axis] == value:
@@ -114,3 +117,26 @@ class ID3DTree(object):
                 rtnList.append(rFeatVec)
         return rtnList
 
+    @staticmethod
+    def stroeTree(inputTree, filename):
+        fw = open(filename, 'w')
+        pickle.dump(inputTree, fw)
+        fw.close()
+
+    @staticmethod
+    def grabTree(filename):
+        fr = open(filename)
+        return pickle.load(fr)
+
+    def predict(self, inputTree, featLabels, testVec):   # Classifier
+        root = list(inputTree.keys())[0]                 # Root of tree (top position's category)
+        secondDict = inputTree[root]                     # the tree structure under root
+        featIndex = featLabels.index(root)               # the index of target category in featLabels
+        key = testVec[featIndex]                         # Get the value of target category in testVec
+        valueOfFeat = secondDict[float(key)]             # search the correspond tree structure of testVec value
+        if isinstance(valueOfFeat, dict):
+            classLabel = self.predict(valueOfFeat, featLabels, testVec)
+        else:
+            classLabel = valueOfFeat
+
+        return classLabel
