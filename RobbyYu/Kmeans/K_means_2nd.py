@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import Normalizer
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 # constant
 color = ["b", "g", "r", "y", "m", "c", "k", "lime", "brown", "pink"]
