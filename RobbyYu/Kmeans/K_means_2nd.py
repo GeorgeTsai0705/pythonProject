@@ -21,21 +21,28 @@ def prepare_asia_data(in_frame):
 
     # Indicator: Reputation
     np_list = in_frame[["Academic Reputation", "Employer Reputation "]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.3 + x[1] * 0.2 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 0.1 + x[1] * 0.1 for x in np_list]).reshape(1, -1)
+    # Original Weight
+    # temp = np.array([x[0] * 0.3 + x[1] * 0.2 for x in np_list]).reshape(1, -1)
     reputation_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=reputation_result[0], columns=["Reputation"])], axis=1)
 
     # Indicator: Scholar
     np_list = in_frame[["Papers per Faculty", "Citations per Faculty ", "Faculty Staff with PhD"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.1 + x[1] * 0.05 + x[2] * 0.05 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 0.1 + x[1] * 0.1 + x[2] * 0.1 for x in np_list]).reshape(1, -1)
+    # Original Weight
+    # temp = np.array([x[0] * 0.1 + x[1] * 0.05 + x[2] * 0.05 for x in np_list]).reshape(1, -1)
     scholar_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=scholar_result[0], columns=["Scholar"])], axis=1)
 
     # Indicator: International
     np_list = in_frame[["International  Faculty", "International Students", "International Research Network",
                         "Inbound Exchange", "Outbound Exchange"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.25 + x[1] * 0.025 + x[2] * 0.1 + x[3] * 0.025 + x[4] * 0.025 for x in np_list
+    temp = np.array([x[0] * 1 + x[1] * 1 + x[2] * 1 + x[3] * 1 + x[4] * 1 for x in np_list
                      ]).reshape(1, -1)
+    # Original Weight
+    # temp = np.array([x[0] * 0.25 + x[1] * 0.025 + x[2] * 0.1 + x[3] * 0.025 + x[4] * 0.025 for x in np_list
+    #                      ]).reshape(1, -1)
     international_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=international_result[0], columns=["International"])], axis=1)
 
@@ -73,6 +80,12 @@ def qs_asia_fn(df):
     df_out.sort_values(by=["Group", "School_Name"], inplace=True)
     df_out.to_csv(path_or_buf="C_Result.csv")
 
+    # Calculate statistic parameters
+    statistic_data = []
+    for i in range(9):
+        mask = df_out["Group"] == i
+        statistic_data.append([i, df_out[mask]["Rank_Asia"].mean(0), df_out[mask]["Rank_Asia"].std(0), df_out[mask].count(0).values[0]])
+    pd.DataFrame(data=statistic_data, columns=["Group", "Mean", "Std", 'Count']).to_csv(path_or_buf="S_Result.csv")
 
 def prepare_the_asia_data(in_frame):
     # schools = in_frame[["School_Name"]]
@@ -80,19 +93,25 @@ def prepare_the_asia_data(in_frame):
 
     # Indicator: Reputation
     np_list = in_frame[["Industry income", "Research"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.075 + x[1] * 0.3 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 1 + x[1] * 1 for x in np_list]).reshape(1, -1)
+    # Original Weight
+    # temp = np.array([x[0] * 0.075 + x[1] * 0.3 for x in np_list]).reshape(1, -1)
     reputation_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=reputation_result[0], columns=["Reputation"])], axis=1)
 
     # Indicator: Scholar
     np_list = in_frame[["Citations", "Teaching"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.3 + x[1] * 0.25 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 1 + x[1] * 1 for x in np_list]).reshape(1, -1)
+    # Original Weight
+    # temp = np.array([x[0] * 0.3 + x[1] * 0.25 for x in np_list]).reshape(1, -1)
     scholar_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=scholar_result[0], columns=["Scholar"])], axis=1)
 
     # Indicator: International
     np_list = in_frame[["International outlook"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.08 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 1 for x in np_list]).reshape(1, -1)
+    # Original Weight
+    # temp = np.array([x[0] * 0.08 for x in np_list]).reshape(1, -1)
     international_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=international_result[0], columns=["International"])], axis=1)
 
@@ -130,10 +149,18 @@ def the_asia_fn(df):
     df_out.sort_values(by=["Group", "School_Name"], inplace=True)
     df_out.to_csv(path_or_buf="C_Result.csv")
 
+    # Calculate statistic parameters
+    statistic_data = []
+    for i in range(9):
+        mask = df_out["Group"] == i
+        statistic_data.append(
+            [i, df_out[mask]["Rank_Asia"].mean(0), df_out[mask]["Rank_Asia"].std(0), df_out[mask].count(0).values[0]])
+    pd.DataFrame(data=statistic_data, columns=["Group", "Mean", "Std", 'Count']).to_csv(path_or_buf="S_Result.csv")
+
 
 def main():
     # load ranking data
-    data_type = "THE"  # THE/QS
+    data_type = "QS"  # THE/QS
     df = pd.read_csv(f'Data/{data_type}_Asia.csv', encoding='unicode_escape')
 
     if data_type == "QS":

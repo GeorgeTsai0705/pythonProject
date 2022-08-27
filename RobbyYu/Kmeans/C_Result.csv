@@ -1,289 +1,598 @@
 ,Group,School_Name,Rank_Asia,Overall
-204,0,American University of Sharjah,226,33.5
-91,0,Hong Kong Baptist University,91,44.4
-36,0,Khalifa University,37,52.6
-47,0,King Fahd University of Petroleum and Minerals,48,50.7
-43,0,King Saud University,44,51.6
-45,0,Qatar University,46,51.5
-59,0,United Arab Emirates University,60,48.8
-61,0,Universiti Brunei Darussalam,62,48.6
-32,0,University of Macau,33,55.3
-54,0,University of Malaya,55,49.1
-71,0,University of Sharjah,72,46.7
-172,1,Ahvaz Jundishapur University of Medical Sciences (AJUMS),173,36.4
-158,1,Azarbaijan Shahid Madani University,159,37.4
-152,1,Banaras Hindu University,153,38.3
-109,1,Beijing University of Chemical Technology,110,42.3
-98,1,Capital Medical University,99,43.3
-38,1,Central South University,39,52.4
-126,1,China Agricultural University,127,40.8
-149,1,Delhi Technological University,149,38.5
-215,1,Fujita Health University,226,33.5
-190,1,Guangdong University of Technology,191,35.3
-173,1,Guangzhou University,174,36.3
-188,1,Hacettepe University,188,35.4
-169,1,Huazhong Agricultural University,169,36.6
-73,1,Hunan University,74,46.5
-41,1,Indian Institute of Science,42,52.0
-219,1,Indian Institute of Science Education and Research Kolkata,226,33.5
-119,1,Indian Institute of Technology Gandhinagar,120,41.4
-86,1,Indian Institute of Technology Indore,87,44.7
-174,1,"International Institute of Information Technology, Hyderabad",174,36.3
-108,1,Iran University of Medical Sciences,109,42.5
-221,1,Istanbul Medeniyet University,226,33.5
-159,1,Jamia Millia Islamia,160,37.3
-141,1,Kansai Medical University,142,38.9
-144,1,Kashan University of Medical Sciences and Health Services,145,38.8
-199,1,Kerman University of Medical Sciences,200,34.8
-226,1,Kindai University,226,33.5
-170,1,Mashhad University of Medical Sciences,171,36.5
-195,1,Nippon Medical School,194,35.0
-198,1,Panjab University,197,34.9
-171,1,Sahand University of Technology,171,36.5
-131,1,Saveetha University,131,40.4
-185,1,Shahid Beheshti University of Medical Sciences,185,35.6
-69,1,Sharif University of Technology,70,47.1
-120,1,Shiraz University of Technology,120,41.4
-113,1,Soochow University,114,42.1
-60,1,South China University of Technology,61,48.7
-70,1,Southern Medical University,71,47.0
-146,1,Tabriz University of Medical Sciences,147,38.7
-134,1,Tehran University of Medical Sciences,135,40.2
-246,1,Teikyo University,226,33.5
-127,1,Thapar Institute of Engineering and Technology,127,40.8
-223,1,The Jikei University School of Medicine,226,33.5
-107,1,Tokyo Medical and Dental University (TMDU),108,42.7
-192,1,Tokyo Metropolitan University,192,35.2
-124,1,University of Kashan,125,41.0
-154,1,University of Kurdistan,155,38.0
-125,1,University of Mohaghegh Ardabili,125,41.0
-135,1,University of Tabriz,136,40.1
-105,1,University of Ulsan,105,43.0
-128,1,University of the Philippines,129,40.7
-114,1,Urmia University of Medical Sciences,115,42.0
-153,1,Wenzhou Medical University,154,38.1
-175,1,Wenzhou University,174,36.3
-84,1,Xiamen University,84,45.1
-99,1,Zhejiang Normal University,99,43.3
-148,2,Abdul Wali Khan University Mardan,149,38.5
-89,2,Amirkabir University of Technology,90,44.5
-81,2,Beihang University,82,45.7
-39,2,Beijing Normal University,40,52.3
-213,2,COMSATS University Islamabad,226,33.5
-34,2,"China Medical University, Taiwan",35,53.8
-165,2,Government College University Faisalabad,166,36.9
-80,2,Gwangju Institute of Science and Technology,81,45.8
-106,2,Harbin Institute of Technology,107,42.9
-168,2,Hazara University Mansehra,169,36.6
-176,2,Indraprastha Institute of Information Technology Delhi,177,36.2
-163,2,"International Islamic University, Islamabad",164,37.0
-197,2,Jiangsu University,197,34.9
-194,2,Keio University,194,35.0
-75,2,Ko? University,76,46.2
-101,2,Kyushu University,101,43.2
-232,2,Mae Fah Luang University,226,33.5
-145,2,Mahidol University,145,38.8
-49,2,Nagoya University,50,50.0
-200,2,Nanjing University of Information Science and Technology,200,34.8
-58,2,National Tsing Hua University,59,48.9
-44,2,National Yang Ming Chiao Tung University,44,51.6
-87,2,Northwestern Polytechnical University,87,44.7
-52,2,Osaka University,53,49.3
-115,2,Quaid-i-Azam University,116,41.9
-151,2,Renmin University of China,152,38.4
-243,2,Shantou University,226,33.5
-65,2,Sichuan University,66,48.1
-85,2,Southeast University,86,45.0
-62,2,Tianjin University,62,48.6
-31,2,Tohoku University,31,56.1
-48,2,Tokyo Institute of Technology,49,50.5
-247,2,Tribhuvan University,226,33.5
-212,2,University of Colombo,226,33.5
-257,2,University of Dhaka,276,31.0
-83,2,University of Electronic Science and Technology of China,84,45.1
-138,2,University of Haifa,139,39.8
-233,2,University of Malakand,226,33.5
-191,2,University of Peshawar,192,35.2
-103,2,University of Tsukuba,103,43.1
-76,2,Xi¡¦an Jiaotong University,76,46.2
-112,3,Ajou University,113,42.2
-202,3,Al-Balqa Applied University,226,33.5
-205,3,Amrita Vishwa Vidyapeetham,226,33.5
-77,3,"Asia University, Taiwan",78,46.0
-207,3,Bah?e?ehir University,226,33.5
-132,3,Bar-Ilan University,133,40.3
-252,3,Beijing Jiaotong University,276,31.0
-181,3,Ben-Gurion University of the Negev,182,35.8
-208,3,Bo?azi?i University,226,33.5
-211,3,Chulalongkorn University,226,33.5
-110,3,Chung-Ang University,110,42.3
-136,3,Ewha Womans University,137,40.0
-217,3,Hiroshima University,226,33.5
-118,3,Hokkaido University,119,41.5
-265,3,Inha University,276,31.0
-140,3,Istanbul Technical University,141,39.3
-228,3,King Mongkut¡¦s University of Technology Thonburi,226,33.5
-129,3,Konkuk University,130,40.5
-150,3,Kyungpook National University,149,38.5
-231,3,Lahore University of Management Sciences,226,33.5
-122,3,Middle East Technical University,123,41.2
-277,3,National Central University,276,31.0
-111,3,National Cheng Kung University (NCKU),110,42.3
-180,3,National Sun Yat-Sen University,181,35.9
-280,3,National Taipei University of Technology,276,31.0
-123,3,National Taiwan Normal University,124,41.1
-117,3,National Taiwan University of Science and Technology (Taiwan Tech),118,41.6
-279,3,National University of Sciences and Technology,276,31.0
-189,3,Northeastern University,188,35.4
-286,3,Shanghai Maritime University,276,31.0
-161,3,Shanghai University,162,37.2
-285,3,Shanghai University of Finance and Economics (SUFE),276,31.0
-164,3,Universiti Pendidikan Sultan Idris,164,37.0
-183,3,Universiti Tenaga Nasional (UNITEN),184,35.7
-250,3,"University of Agriculture, Faisalabad",276,31.0
-220,3,University of Indonesia,226,33.5
-249,3,Yeungnam University,226,33.5
-88,4,An-Najah National University,89,44.6
-74,4,Cankaya University,75,46.3
-90,4,Duy Tan University,91,44.4
-9,4,Fudan University,10,71.5
-78,4,Jordan University of Science and Technology,78,46.0
-26,4,Korea University,27,58.9
-30,4,Kyung Hee University,31,56.1
-16,4,Nanjing University,17,65.3
-20,4,National Taiwan University (NTU),21,62.4
-1,4,Peking University,2,87.4
-40,4,Sejong University,41,52.2
-12,4,Shanghai Jiao Tong University,13,68.1
-18,4,Southern University of Science and Technology (SUSTech),19,62.6
-17,4,Sungkyunkwan University (SKKU),18,64.4
-29,4,Tel Aviv University,30,56.8
-72,4,Ton Duc Thang University,73,46.6
-0,4,Tsinghua University,1,87.6
-19,4,Ulsan National Institute of Science and Technology (UNIST),20,62.5
-116,4,University of International Business and Economics,117,41.8
-96,4,University of Tabuk,96,43.5
-21,4,Yonsei University (Seoul campus),21,62.4
-10,4,Zhejiang University,11,69.6
-283,5,?Shahid Chamran University of Ahvaz,276,31.0
-203,5,Aligarh Muslim University,226,33.5
-206,5,Anna University,226,33.5
-251,5,Beijing Forestry University,276,31.0
-104,5,Beijing Institute of Technology,105,43.0
-253,5,Bharathiar University,276,31.0
-254,5,"Birla Institute of Technology and Science, Pilani",276,31.0
-209,5,Chang Gung University,226,33.5
-255,5,"China University of Geosciences, Beijing",276,31.0
-196,5,"China University of Geosciences, Wuhan",197,34.9
-210,5,China University of Mining and Technology,226,33.5
-256,5,China University of Petroleum (East China),276,31.0
-179,5,"China University of Petroleum, Beijing",180,36.0
-130,5,Chongqing University,131,40.4
-162,5,Dalian University of Technology,163,37.1
-187,5,Donghua University,188,35.4
-258,5,East China University of Science and Technology,276,31.0
-259,5,Fu Jen Catholic University,276,31.0
-216,5,Fuzhou University,226,33.5
-260,5,Hyogo College of Medicine,276,31.0
-262,5,"Indian Institute of Science Education and Research, Pune",276,31.0
-263,5,Indian Institute of Technology (Indian School of Mines) Dhanbad,276,31.0
-264,5,Indian Institute of Technology Patna,276,31.0
-157,5,Institute of Chemical Technology,158,37.5
-95,5,Iran University of Science and Technology,96,43.5
-266,5,Isfahan University of Medical Sciences,276,31.0
-177,5,Isfahan University of Technology,177,36.2
-267,5,Istanbul University,276,31.0
-268,5,Istanbul University-Cerrahpa?a,276,31.0
-269,5,Jadavpur University,276,31.0
-166,5,Jawaharlal Nehru University,167,36.7
-222,5,Jiangsu Normal University,226,33.5
-270,5,Juntendo University,276,31.0
-273,5,K.N. Toosi University of Technology,276,31.0
-225,5,KIIT University,226,33.5
-271,5,Kalasalingam Academy of Research and Education,276,31.0
-272,5,Kaohsiung Medical University,276,31.0
-182,5,Kobe University,182,35.8
-230,5,Kurume University,226,33.5
-139,5,Mahatma Gandhi University,139,39.8
-155,5,Nanjing Medical University,155,38.0
-234,5,Nanjing Normal University,226,33.5
-235,5,Nanjing Tech University,226,33.5
-278,5,National Institute of Technology Rourkela,276,31.0
-236,5,National Institute of Technology Silchar,226,33.5
-281,5,National Yunlin University of Science and Technology,276,31.0
-237,5,Niigata University,226,33.5
-238,5,NorthWest A&F University,226,33.5
-282,5,Northeast Normal University,276,31.0
-239,5,Pusan National University,226,33.5
-240,5,Qingdao University,226,33.5
-241,5,Savitribai Phule Pune University,226,33.5
-201,5,Shahid Beheshti University,200,34.8
-284,5,Shahrood University of Technology,276,31.0
-287,5,Shiraz University,276,31.0
-244,5,South China Normal University,226,33.5
-214,5,University of Delhi,226,33.5
-276,5,University of Maragheh,276,31.0
-242,5,University of Science and Technology Beijing,226,33.5
-248,5,Yasouj University,226,33.5
-184,6,Bilkent University,185,35.6
-51,6,East China Normal University,51,49.9
-46,6,Hanyang University,47,51.4
-57,6,Hebrew University of Jerusalem,57,49.0
-261,6,Imam Abdulrahman Bin Faisal University,276,31.0
-167,6,Jinan University,167,36.7
-227,6,King Khalid University,226,33.5
-229,6,King Saud bin Abdulaziz University for Health Sciences,226,33.5
-274,6,Kuwait University,276,31.0
-275,6,Lebanese American University,276,31.0
-178,6,Prince Sattam Bin Abdulaziz University,179,36.1
-218,6,Reichman University,226,33.5
-79,6,Sabanc? University,78,46.0
-245,6,Sultan Qaboos University,226,33.5
-97,6,Technion Israel Institute of Technology,98,43.4
-193,6,The University of Aizu,194,35.0
-224,6,The University of Jordan,226,33.5
-42,6,Tongji University,43,51.9
-186,6,Umm Al-Qura University,185,35.6
-137,6,Universiti Kebangsaan Malaysia,138,39.9
-142,6,Universiti Putra Malaysia,142,38.9
-156,6,Universiti Sains Malaysia,157,37.7
-160,6,Universiti Teknologi Malaysia,160,37.3
-94,6,Universiti Teknologi Petronas,95,43.8
-147,6,Universiti Utara Malaysia,148,38.6
-133,6,Xi¡¦an Jiaotong-Liverpool University,133,40.3
-143,6,Zayed University,142,38.9
-121,7,Alagappa University,122,41.3
-56,7,Babol Noshirvani University of Technology,57,49.0
-25,7,Huazhong University of Science and Technology,26,60.1
-67,7,Indian Institute of Technology Ropar,68,47.2
-100,7,"Islamic Azad University, Najafabad Branch (IAUN)",101,43.2
-64,7,JSS Academy of Higher Education and Research,65,48.2
-13,7,Korea Advanced Institute of Science and Technology (KAIST),14,66.6
-63,7,Kurdistan University of Medical Sciences,64,48.4
-11,7,Kyoto University,12,68.8
-68,7,Mazandaran University of Medical Sciences,68,47.2
-55,7,Nankai University,55,49.1
-22,7,Pohang University of Science and Technology (POSTECH),23,61.3
-7,7,Seoul National University,8,72.7
-53,7,Shenzhen University,54,49.2
-102,7,Southwestern University of Finance and Economics,103,43.1
-37,7,Sun Yat-sen University,38,52.5
-28,7,Taipei Medical University,29,58.3
-5,7,The University of Tokyo,6,75.0
-82,7,"University of Occupational and Environmental Health, Japan",83,45.3
-92,7,University of Peradeniya,93,44.1
-15,7,University of Science and Technology of China,16,65.4
-24,7,Wuhan University,25,61.0
-93,7,Yokohama City University,94,44.0
-33,8,Alfaisal University,34,54.0
-50,8,American University of Beirut,51,49.9
-6,8,Chinese University of Hong Kong,7,74.5
-23,8,City University of Hong Kong,24,61.1
-14,8,Hong Kong Polytechnic University,15,66.0
-27,8,King Abdulaziz University,28,58.4
-35,8,Macau University of Science and Technology,36,53.0
-4,8,"Nanyang Technological University, Singapore",5,76.0
-2,8,National University of Singapore,3,84.7
-8,8,The Hong Kong University of Science and Technology,9,72.2
-66,8,University of Hail,67,47.9
-3,8,University of Hong Kong,4,80.2
+249,0,Aga Khan University,255,11.7
+501,0,Ahsanullah University of Science and Technology,525,8.5
+351,0,Air University Pakistan,375,9.2
+250,0,Aligarh Muslim University,255,19.6
+596,0,American International University-Bangladesh (AIUB),575,5.0
+453,0,Anhui University,475,6.1
+546,0,Arid Agriculture University,575,5.0
+502,0,Ateneo de Davao University,525,8.9
+290,0,BRAC University,295,20.0
+302,0,Bahauddin Zakariya University,325,13.4
+401,0,"Bahria University, Islamabad. Pakistan",425,8.5
+456,0,Bangalore University,475,9.2
+457,0,Bangkok University,475,13.6
+200,0,Bangladesh University of Engineering and Technology,202,25.4
+355,0,Beijing University of Chinese Medicine,375,11.6
+356,0,Beijing University of Posts and Telecommunications,375,10.0
+503,0,Bharath Institute of Higher Education and Research,525,1.6
+219,0,Bina Nusantara University (BINUS),220,9.8
+547,0,Burapha University,575,11.3
+504,0,Can Tho University,525,12.8
+505,0,Central University of Finance and Economics,525,6.5
+270,0,Chandigarh University,275,17.4
+405,0,Chuo University,425,10.9
+508,0,Communication University of China,525,10.1
+358,0,Daffodil International University,375,19.4
+548,0,Dalian Maritime University,575,4.2
+292,0,Dankook University,295,10.1
+159,0,De La Salle University,160,31.5
+549,0,Delhi Technological University,575,5.0
+509,0,"Dhaka University of Engineering and Technology, Gazipur",525,5.1
+510,0,Dong-A University,525,6.5
+222,0,Donghua University,224,75.7
+550,0,Doshisha Women's College of Liberal Arts,575,4.4
+359,0,Dow University of Health Sciences,375,5.3
+361,0,Ehime University,375,10.9
+551,0,Forman Christian College (A Chartered University),575,5.7
+552,0,Fukushima University,575,5.7
+511,0,GITAM University,525,4.7
+512,0,Gakushuin University,525,6.1
+274,0,Gifu University,275,11.7
+514,0,Goa University,525,4.7
+409,0,Government College University Lahore,425,10.1
+515,0,Government College Women University Faisalabad,525,2.0
+553,0,Government College Women University Sialkot,575,1.5
+411,0,Guangxi University,425,8.6
+463,0,"Guru Nanak Dev University, Amristar",475,6.7
+555,0,Hanoi National University of Education,575,6.7
+281,0,Hanoi University of Science and Technology,285,7.8
+557,0,"Hazara University, Pakistan",575,3.1
+412,0,HeFei University of Technology,425,6.7
+558,0,Hebei University of Technology,575,3.9
+559,0,Hirosaki University,575,5.9
+464,0,Hosei University,475,12.2
+414,0,Hue University,425,12.9
+466,0,"Indian Institute of Information Technology, Allahabad",475,10.0
+518,0,Inner Mongolia University,525,5.5
+367,0,Institute of Space Technology,375,4.6
+467,0,Iqra University,475,8.4
+560,0,Iwate University,575,5.9
+519,0,Jain (Deemed to be University),525,2.8
+561,0,Japan Women's University,575,11.0
+562,0,"Jawaharlal Nehru Technological University Anantapur, Ananthapuramu",575,6.7
+419,0,KLE ACADEMY OF HIGHER EDUCATION AND RESEARCH,425,1.4
+564,0,Kansai Gaidai University,575,3.3
+420,0,Kansai University,425,14.9
+470,0,Khulna University of Engineering and Technology,475,13.8
+283,0,King Mongkut's Institute of Technology Ladkrabang,285,20.1
+371,0,King Mongkut's University of Technology North Bangkok,375,19.7
+471,0,Kitasato University,475,4.7
+372,0,Kochi University,375,8.0
+566,0,Kogakuin University of Technology and Engineering,575,2.1
+567,0,Korea National University of Education,575,12.5
+569,0,"Kuvempu University, Shankaraghatta",575,1.7
+570,0,Lovely Professional University (LPU),575,4.5
+571,0,Maharishi Markandeshwar (Deemed to be University),575,3.2
+572,0,Mahasarakham University,575,10.4
+523,0,Map?a University,525,9.4
+313,0,Meiji University,325,18.0
+524,0,Mie University,525,9.1
+573,0,Mindanao State University - Iligan Institute of Technology,575,12.8
+525,0,Mokpo National University,525,4.7
+376,0,NED University of Engineering and Technology,375,10.9
+314,0,Nagoya City University,325,5.8
+377,0,Nagoya Institute of Technology (NIT),375,14.7
+315,0,Nanjing Agricultural University,325,14.6
+428,0,Naresuan University,425,13.3
+476,0,National Chinyi University of Technology,475,7.7
+477,0,National Kaohsiung University of Science and Technology (NKUST),475,9.7
+478,0,National Pingtung University of Science and Technology,475,5.5
+575,0,National Textile University Faisalabad,575,4.4
+526,0,National United University,525,2.0
+430,0,National University of Computer and Emerging Sciences,425,8.5
+284,0,National University of Defense Technology,285,6.8
+432,0,Nihon University,425,12.1
+426,0,Nitte University,425,4.7
+576,0,Northeast Forestry University,575,2.6
+255,0,O.P. Jindal Global University,255,15.4
+320,0,Panjab University,325,14.3
+527,0,Riphah International University,525,6.7
+481,0,SASTRA Deemed University,475,8.1
+383,0,SRM INSTITUTE OF SCIENCE AND TECHNOLOGY,375,11.7
+482,0,Saga University,475,9.6
+179,0,Savitribai Phule Pune University,180,8.5
+484,0,Seoul National University of Education,475,12.2
+579,0,Shandong Agricultural University,575,3.0
+114,0,Shenzhen University,115,7.1
+333,0,Shimane University,325,6.3
+386,0,Shizuoka University,375,9.7
+529,0,Sichuan Agricultural University,525,5.8
+435,0,Siksha 'O' Anusandhan (Deemed to be University),425,9.4
+530,0,Silliman University,525,11.2
+436,0,Silpakorn University,425,16.3
+437,0,South China Agricultural University,425,6.8
+582,0,Sukkur IBA University,575,4.5
+583,0,Sunchon National University,575,4.1
+439,0,Taiyuan University of Technology,425,5.3
+440,0,Telkom University,425,13.7
+533,0,"The Islamia University of Bahawalpur,Pakistan",525,10.2
+338,0,The University of Lahore,325,20.9
+584,0,Tokyo City University,575,8.5
+585,0,Tokyo Denki University,575,6.1
+340,0,Toyota Technological Institute,325,8.1
+443,0,UNIVERSITI TEKNIKAL MALAYSIA MELAKA,425,11.5
+488,0,United International University,475,14.3
+586,0,Universitas Andalas,575,14.7
+242,0,Universitas Brawijaya,239,22.2
+395,0,Universitas Hasanuddin,375,24.7
+489,0,Universitas Islam Indonesia,475,22.3
+544,0,Universitas Negeri Yogyakarta,525,15.7
+535,0,Universitas Pendidikan Indonesia,525,17.7
+442,0,Universitas Sebelas Maret,425,19.2
+536,0,Universitas Sumatera Utara,525,13.7
+587,0,Universiti Malaysia Kelantan,575,7.5
+257,0,Universiti Malaysia Perlis,255,18.3
+538,0,Universiti Sultan Zainal Abidin,525,11.1
+491,0,University of Central Punjab,475,8.1
+343,0,University of Colombo,325,25.6
+539,0,University of Da Nang,525,9.1
+142,0,University of Dhaka,142,33.4
+588,0,"University of Economics Ho Chi Minh City, Viet Nam",575,4.2
+182,0,University of Engineering & Technology (UET) Lahore,183,28.0
+540,0,University of Fukui,525,6.0
+396,0,University of Jaffna,375,7.9
+493,0,University of Kelaniya,475,11.0
+494,0,"University of Malakand,Chakdara",475,5.0
+495,0,University of Management and Technology,475,11.6
+446,0,University of Moratuwa,425,13.4
+278,0,University of Mumbai,275,23.7
+268,0,University of Peradeniya,265,18.5
+496,0,University of Sargodha,475,7.5
+590,0,University of Sindh Jamshoro,575,5.5
+448,0,University of Sri Jayawardenapura,425,11.5
+592,0,"University of Veterinary and Animal Sciences, Lahore, Pakistan",575,8.8
+145,0,University of the Punjab,145,33.0
+541,0,Utsunomiya University,525,4.2
+178,0,Viet Nam National University Ho Chi Minh City (VNU-HCM),179,20.7
+593,0,Walailak University,575,8.2
+542,0,Wonkwang University,525,4.3
+594,0,Xi'an University of Architecture and Technology (XAUAT),575,4.9
+398,0,Xidian University,375,9.1
+543,0,Xinjiang University,525,7.3
+450,0,Yamagata University,425,8.2
+348,0,Yamaguchi University,325,11.6
+595,0,Yanbian University,575,4.8
+497,0,Yanshan University,475,3.7
+229,0,Yokohama City University,230,22.5
+498,0,Youngsan University,475,12.1
+499,0,Yunnan University,475,9.8
+545,0,Ziauddin University,525,3.7
+50,1,Beijing Normal University,51,60.1
+402,1,Busan University of Foreign Studies,425,8.9
+57,1,Ewha Womans University,58,58.0
+95,1,Gwangju Institute of Science and Technology (GIST),96,45.7
+363,1,HELP University,375,5.9
+62,1,Harbin Institute of Technology,63,54.0
+29,1,Hokkaido University,30,78.3
+54,1,Huazhong University of Science and Technology,55,58.2
+13,1,KAIST - Korea Advanced Institute of Science & Technology,14,93.0
+14,1,Kyoto University,15,92.1
+28,1,Kyushu University,29,78.7
+27,1,Nagoya University,28,79.7
+74,1,Nankai University,75,51.2
+40,1,National Cheng Kung University (NCKU),41,71.2
+67,1,National Sun Yat-sen University,68,52.3
+75,1,National Taipei University of Technology,76,50.9
+33,1,National Tsing Hua University,34,76.1
+126,1,Northwestern Polytechnical University,127,36.4
+21,1,Osaka University,22,87.6
+25,1,Pohang University of Science And Technology (POSTECH),26,83.6
+81,1,Sejong University,81,49.7
+17,1,Seoul National University,18,90.9
+76,1,Shandong University,77,50.0
+102,1,Sichuan University,103,43.6
+91,1,Southern University of Science and Technology,91,46.8
+43,1,Sun Yat-sen University,44,70.0
+94,1,Taipei Medical University (TMU),95,45.8
+11,1,The University of Tokyo,11,93.6
+70,1,Tianjin University,71,51.8
+22,1,Tohoku University,23,87.3
+20,1,Tokyo Institute of Technology (Tokyo Tech),21,88.8
+84,1,University of Chinese Academy of Sciences (UCAS),85,48.9
+96,1,University of Macau,96,45.7
+30,1,University of Science and Technology of China,31,77.8
+36,1,Wuhan University,37,72.3
+72,1,Xiamen University,73,51.4
+51,1,Xi¡¦an Jiaotong University,52,60.0
+299,2,Akita International University,325,8.2
+115,2,Beihang University (former BUAA),116,39.3
+197,2,Beijing University of Chemical Technology,199,25.7
+192,2,"Birla Institute of Technology and Science, Pilani",194,26.5
+169,2,Central South University,170,30.2
+171,2,China Agricultural University,172,29.4
+158,2,Chongqing University,159,31.6
+153,2,Dalian University of Technology,154,32.1
+360,2,"Dr. Harisingh Gour University (University of Sagar), Sagar",375,3.6
+149,2,East China University of Science and Technology,150,32.8
+231,2,Huazhong Agricultural University,232,22.4
+139,2,Hunan University,140,33.8
+203,2,IISER Bhopal,205,25.2
+55,2,Indian Institute of Science,56,58.1
+41,2,Indian Institute of Technology Bombay (IITB),42,71.0
+44,2,Indian Institute of Technology Delhi (IITD),45,69.6
+118,2,Indian Institute of Technology Guwahati (IITG),119,38.6
+223,2,Indian Institute of Technology Hyderabad,224,23.0
+177,2,Indian Institute of Technology Indore,178,28.7
+63,2,Indian Institute of Technology Kanpur (IITK),64,53.1
+59,2,Indian Institute of Technology Kharagpur (IIT-KGP),60,56.0
+53,2,Indian Institute of Technology Madras (IITM),54,58.8
+307,2,Indian Institute of Technology Patna,325,4.7
+181,2,"Institute of Chemical Technology, Mumbai",183,28.0
+161,2,Jadavpur University,162,31.3
+568,2,Kumaun University,575,2.4
+422,2,Limkokwing University of Creative Technology,425,6.8
+522,2,Malaysia University of Science and Technology (MUST),525,10.5
+205,2,Nanjing Normal University,205,25.2
+241,2,Nanjing University of Information Science and Technology,239,22.2
+175,2,Nanjing University of Science and Technology,176,29.0
+90,2,Quaid-i-Azam University,91,46.8
+61,2,Renmin (People's) University of China,62,54.2
+483,2,"Sardar Patel University, Vallabh Vidyanagar",475,2.8
+331,2,Shantou University,325,6.0
+121,2,South China University of Technology,122,37.5
+112,2,Southeast University,113,41.1
+486,2,Sri Krishnadevaraya University,475,3.1
+144,2,Tokyo University of Agriculture and Technology,145,33.0
+339,2,Tokyo University of Foreign Studies,325,15.0
+93,2,Ulsan National Institute of Science and Technology (UNIST),94,46.0
+154,2,University of Calcutta,154,32.1
+157,2,University of Hyderabad,156,31.8
+492,2,"University of Kashmir, Srinagar",475,6.4
+124,2,University of Science and Technology Beijing,125,36.6
+147,2,University of Ulsan,147,32.9
+400,3,ANDHRA UNIVERSITY,425,8.7
+500,3,Acharya Nagarjuna University,525,4.0
+109,3,Airlangga University,110,42.6
+300,3,Akita University,325,4.9
+123,3,Ateneo de Manila University,124,36.9
+455,3,Banasthali Vidyapith,475,4.8
+66,3,Bandung Institute of Technology (ITB),67,52.5
+357,3,Chang Jung Christian University,375,11.6
+506,3,Chang'an University,525,4.2
+458,3,Changwon National University,475,3.8
+87,3,Chiang Mai University,88,48.1
+403,3,Chinese Culture University,425,11.0
+507,3,Chung Hua University (CHU),525,7.3
+272,3,Chungbuk National University,275,11.0
+406,3,Cochin University of Science and Technology,425,4.6
+207,3,Diponegoro University,209,24.9
+208,3,Duy Tan University,210,24.8
+461,3,East West University,475,13.5
+410,3,Gangneung-Wonju National University,425,3.5
+462,3,Guangdong University of Foreign studies,475,5.8
+262,3,Gunma University,265,8.8
+280,3,Hallym University,285,8.3
+556,3,Hansung University Seoul,575,10.2
+365,3,Incheon National University,375,12.4
+251,3,Indian Institute of Technology Bhubaneswar,255,9.3
+306,3,Indian Institute of Technology Gandhinagar (IITGN),325,6.4
+263,3,Indian Institute of Technology Ropar,265,4.3
+417,3,"Indraprastha Institute of Information Technology, Delhi",425,4.6
+308,3,Inje University,325,4.3
+418,3,Islamic University of Technology,425,11.0
+264,3,JSS Academy of Higher Education & Research,265,6.8
+310,3,Jeju National University,325,9.6
+563,3,Josai International University,575,6.9
+468,3,KALINGA INSTITUTE OF INDUSTRIAL TECHNOLOGY (KIIT) UNIVERSITY,475,5.4
+248,3,Kagoshima University,249,21.8
+137,3,Kasetsart University,138,34.8
+194,3,King Mongkut's University of Technology Thonburi,196,26.4
+421,3,Korea Maritime & Ocean University,425,8.7
+185,3,Kumamoto University,187,27.8
+472,3,Kunsan National University,475,4.3
+373,3,Kwangwoon University,375,5.1
+265,3,Kyushu Institute of Technology,265,13.1
+116,3,Lahore University of Management Sciences (LUMS),116,39.3
+193,3,"Manipal Academy of Higher Education, Manipal, Karnataka, India",194,26.5
+475,3,Ming Chuan University,475,6.7
+424,3,Muroran Institute of Technology,425,2.2
+574,3,Nanhua University,575,1.8
+316,3,National Dong Hwa University,325,14.7
+380,3,"National Institute of Technology Karnataka, Surathkal",375,2.9
+275,3,National Institute of Technology Rourkela,275,6.8
+425,3,National Institute of Technology Silchar,425,1.3
+294,3,"National Institute of Technology, Tiruchirappalli",295,8.5
+317,3,National Taipei University,325,18.3
+479,3,National Taipei University of Education,475,5.5
+73,3,National University of Sciences And Technology (NUST) Islamabad,74,51.3
+381,3,National Yunlin University of Science and Technology,375,11.0
+209,3,Niigata University,211,24.7
+213,3,North South University,215,24.0
+382,3,OSMANIA UNIVERSITY,375,12.3
+480,3,Ochanomizu University,475,7.2
+188,3,Okayama University,189,27.3
+173,3,Osaka City University,174,29.2
+321,3,Pondicherry University,325,9.7
+170,3,Prince of Songkla University,171,30.0
+295,3,Pukyong National University,295,13.9
+324,3,Sathyabama Institute of Science and Technology (Deemed to be University),325,11.9
+329,3,Shanghai University of Finance and Economics,325,13.7
+330,3,Shanghai University of Traditional Chinese Medicine,325,4.3
+298,3,"Shiv Nadar University, NCR",295,4.3
+434,3,Siam University,425,7.3
+581,3,Sojo University,575,2.5
+389,3,Soonchunhyang University,375,4.3
+438,3,Southwestern University of Finance and Economics,425,7.0
+391,3,Srinakharinwirot University,375,11.6
+214,3,Sungshin Women's University,216,23.9
+392,3,Suranaree University of Technology,375,15.3
+393,3,Symbiosis International (Deemed University),375,8.6
+336,3,Tamil Nadu Agricultural University,325,4.8
+394,3,Tata Institute of Social Sciences,375,13.3
+110,3,Thammasat University,111,42.0
+532,3,The Hang Seng University of Hong Kong,525,2.7
+245,3,Tokai University,247,21.9
+534,3,Udayana University,525,12.2
+190,3,Universitas Padjadjaran,192,26.7
+342,3,Universiti Kuala Lumpur (UniKL),325,18.9
+225,3,Universiti Malaysia Sabah (UMS),227,22.7
+537,3,Universiti Sains Islam Malaysia,525,10.5
+105,3,Universiti Teknologi MARA - UiTM,105,43.3
+246,3,Universiti Tun Hussein Onn Malaysia (UTHM),247,21.9
+167,3,Universiti Tunku Abdul Rahman (UTAR),167,30.4
+244,3,University of Karachi,245,22.1
+445,3,University of Kerala,425,9.6
+345,3,University of Miyazaki,325,7.9
+79,3,University of the Philippines,77,50.0
+196,3,Vellore Institute of Technology (VIT),198,25.8
+148,3,"Vietnam National University, Hanoi",147,32.9
+237,4,Ashoka University,239,22.2
+269,4,Asia Pacific University of Technology and Innovation (APU),275,9.5
+68,4,Chung-Ang University (CAU),69,52.2
+104,4,Dongguk University,105,43.3
+100,4,HUFS - Hankuk (Korea) University of Foreign Studies,101,44.1
+65,4,Hong Kong Baptist University,66,53.0
+150,4,Jinan University (China),150,32.8
+312,4,Lincoln University College,325,7.8
+131,4,"Lingnan University, Hong Kong",131,36.0
+89,4,National Chengchi University,90,47.1
+60,4,National Taiwan Normal University,61,55.2
+49,4,National Taiwan University of Science and Technology (Taiwan Tech),50,61.0
+107,4,Singapore Management University,107,43.2
+85,4,Sogang University,86,48.5
+52,4,Taylor's University,53,59.0
+24,4,The Hong Kong Polytechnic University,25,85.1
+141,4,Ton Duc Thang University,142,33.4
+69,4,Universiti Brunei Darussalam (UBD),69,52.2
+32,4,Universiti Kebangsaan Malaysia (UKM),33,76.8
+166,4,Universiti Malaysia Terengganu (UMT),167,30.4
+34,4,Universiti Sains Malaysia (USM),35,74.6
+37,4,Universiti Teknologi Malaysia,38,72.2
+71,4,Universiti Teknologi PETRONAS (UTP),72,51.6
+97,4,Universiti Utara Malaysia (UUM),98,45.1
+48,4,University of Tsukuba,49,62.9
+19,5,City University of Hong Kong,20,89.2
+80,5,East China Normal University,81,49.7
+6,5,Fudan University,7,97.4
+23,5,Hanyang University,24,86.3
+12,5,Korea University,13,93.1
+38,5,Kyung Hee University,39,71.4
+31,5,Nanjing University,32,77.3
+2,5,"Nanyang Technological University, Singapore (NTU)",3,98.7
+18,5,National Taiwan University (NTU),19,90.8
+0,5,National University of Singapore (NUS),1,100.0
+1,5,Peking University,2,99.5
+9,5,Shanghai Jiao Tong University,10,93.9
+16,5,Sungkyunkwan University (SKKU),17,91.0
+10,5,The Chinese University of Hong Kong (CUHK),11,93.6
+8,5,The Hong Kong University of Science and Technology,9,94.2
+3,5,The University of Hong Kong,3,98.7
+47,5,Tongji University,48,63.6
+4,5,Tsinghua University,5,98.3
+7,5,Universiti Malaya (UM),8,94.9
+26,5,Universiti Putra Malaysia (UPM),27,81.4
+15,5,Yonsei University,16,91.1
+5,5,Zhejiang University,6,97.8
+216,6,Amity University,218,23.5
+454,6,Atma Jaya Catholic University of Indonesia,475,12.0
+259,6,Beijing Foreign Studies University,265,15.8
+111,6,Bogor Agricultural University,112,41.7
+260,6,China University of Political Science and Law,265,14.3
+404,6,Chosun University,425,6.0
+271,6,Chung Yuan Christian University,275,13.0
+407,6,Fujian Normal University,425,4.7
+58,6,Gadjah Mada University,59,57.3
+99,6,Hitotsubashi University,100,44.3
+415,6,I-Shou University,425,4.7
+364,6,INTI International University,375,6.7
+119,6,Inha University,120,38.4
+160,6,Institut Teknologi Sepuluh Nopember (ITS Surabaya),160,31.5
+247,6,International Christian University,249,21.8
+122,6,International Islamic University Malaysia (IIUM),123,37.1
+45,6,Keio University,46,68.0
+132,6,Khon Kaen University,133,35.6
+64,6,Kobe University,64,53.1
+253,6,Kookmin University,255,11.0
+146,6,Management and Science University,147,32.9
+187,6,Multimedia University (MMU),189,27.3
+254,6,Nagaoka University of Technology,255,4.7
+140,6,Nagasaki University,141,33.7
+429,6,National Changhua University of Education,425,4.6
+379,6,National Chi Nan University,375,8.6
+431,6,National University of Kaohsiung,425,6.3
+577,6,PaiChai University,575,2.9
+127,6,Ritsumeikan University,127,36.4
+390,6,SRI VENKATESWARA UNIVERSITY,375,4.6
+528,6,Sangmyung University,525,3.7
+325,6,Seoul National University of Science and Technology,325,16.7
+327,6,Shanghai International Studies University,325,13.2
+332,6,Shibaura Institute of Technology,325,10.4
+485,6,Shih Chien University,475,6.9
+580,6,Silla University,575,2.3
+388,6,Soochow University (Taiwan),375,13.1
+286,6,Soongsil University,285,11.1
+172,6,Sophia University,172,29.4
+531,6,Sun Moon University,525,3.0
+120,6,Sunway University,121,37.9
+337,6,Tamkang University,325,14.2
+441,6,Toyo University,425,16.4
+341,6,Tunghai University,325,14.4
+77,6,UCSI University,77,50.0
+56,6,Universitas Indonesia,56,58.1
+226,6,Universiti Malaysia Sarawak (UNIMAS),227,22.7
+206,6,Universiti Pendidikan Sultan Idris (UPSI),205,25.2
+125,6,Universiti Teknologi Brunei,126,36.5
+143,6,Universiti Tenaga Nasional (UNITEN),144,33.1
+344,6,University of International Business and Economics,325,9.9
+176,6,University of Santo Tomas,177,28.9
+397,6,University of Taipei,375,11.2
+449,6,University of the Thai Chamber of Commerce (UTCC),425,6.6
+39,6,Waseda University,40,71.3
+168,6,Yokohama National University,169,30.3
+279,6,Yuan Ze University,275,12.3
+350,7,AIMST UNIVERSITY,375,7.4
+451,7,Abdul Wali Khan University Mardan,475,5.6
+452,7,Ahmedabad University,475,4.9
+138,7,Ajou University,139,34.2
+218,7,Alagappa Univeristy,220,23.4
+230,7,Anna University,232,22.4
+352,7,Annamalai University,375,7.7
+353,7,Aoyama Gakuin University,375,15.3
+301,7,Asia University Taiwan,325,15.7
+354,7,Beijing Forestry University,375,10.7
+201,7,Beijing University of Technology,202,25.4
+136,7,COMSATS University Islamabad,137,35.0
+228,7,Central China Normal University,230,22.5
+180,7,Chang Gung University,181,28.1
+459,7,Chaoyang University of Technology,475,9.8
+130,7,Chiba University,131,36.0
+303,7,China Pharmaceutical University,325,6.5
+291,7,China University of Mining and Technology,295,9.5
+162,7,Chungnam National University,163,31.2
+273,7,Doshisha University,275,21.5
+408,7,Future University Hakodate,425,3.3
+261,7,Fuzhou University,265,6.4
+513,7,"Gauhati University, Guwahati",525,3.7
+362,7,"Government College University, Faisalabad",375,4.2
+554,7,Guizhou University,575,4.1
+293,7,Gyeongsang National University,295,7.6
+304,7,Hohai University,325,9.7
+413,7,Hongik University,425,12.0
+465,7,Hunan Normal University,475,7.0
+252,7,"INDIAN INSTITUTE OF TECHNOLOGY (INDIAN SCHOOL OF MINES), DHANBAD",255,7.1
+416,7,"Independent University, Bangladesh (IUB)",425,4.8
+366,7,"Indian Institute of Engineering Science and Technology, Shibpur",375,4.7
+517,7,Indian Institute of Information Technology Design and Manufacturing Kancheepuram,525,2.4
+108,7,Indian Institute of Technology Roorkee (IITR),109,28.0
+309,7,"International Islamic University, Islamabad (IIU)",325,16.1
+368,7,Iwate Prefectural University,375,2.0
+369,7,Jamia Hamdard,375,12.2
+184,7,Jamia Millia Islamia,186,27.9
+106,7,Jawaharlal Nehru University,107,43.2
+198,7,Jiangnan University,199,25.7
+186,7,Jiangsu University,188,27.4
+520,7,Kanagawa University,525,5.2
+239,7,Kangwon National University,239,22.2
+565,7,"Kavayitri Bahinabai Chaudhari North Maharashtra University, Jalgaon",575,1.9
+469,7,Keimyung University,475,6.0
+370,7,Kindai University (Kinki University),375,11.3
+311,7,Kwansei Gakuin University,325,9.8
+521,7,Kyoto Sangyo University,525,9.6
+165,7,Lanzhou University,166,30.6
+473,7,Liaoning University,475,3.7
+474,7,Mae Fah Luang University,475,8.4
+423,7,Mehran University of Engineering & Technology,425,8.4
+374,7,Minzu University of China,375,8.6
+375,7,Myongji University,375,6.0
+427,7,Nanchang University,425,5.9
+240,7,Nanjing Medical University,239,22.2
+236,7,Nanjing Tech University,236,22.3
+378,7,Nara Women's University,375,4.0
+318,7,North China Electric Power University,325,4.5
+319,7,Northeast Normal University,325,7.4
+276,7,Northeastern University (China),275,9.2
+285,7,Northwest Agriculture and Forestry University,285,10.3
+232,7,Northwest University (China),232,22.4
+243,7,Ocean University of China,245,22.1
+202,7,Osaka Prefecture University,204,25.3
+189,7,Pakistan Institute of Engineering and Applied Sciences (PIEAS),189,27.3
+296,7,Qingdao University,295,5.4
+323,7,Saitama University,325,10.4
+578,7,Saurashtra University,575,2.8
+326,7,Shaanxi Normal University,325,7.4
+384,7,Shandong University of Science and Technology,375,3.3
+385,7,Shanghai University of International Business and Economics,375,6.3
+215,7,Shinshu University,217,23.7
+433,7,"Shivaji University, Kolhapur",425,3.0
+277,7,Shoolini University of Biotechnology and Management Sciences,275,4.4
+334,7,South China Normal University,325,9.3
+335,7,Southwest Jiaotong University,325,8.3
+256,7,Southwest University,255,10.9
+288,7,Thapar Institute of Engineering & Technology,285,6.7
+191,7,The Catholic University of Korea,193,26.6
+266,7,The University of Electro-Communications (UEC-Tokyo),265,5.3
+233,7,Tokushima University,232,22.4
+163,7,Tokyo Metropolitan University,164,31.1
+134,7,Tokyo University of Science,135,35.2
+487,7,Tottori University,475,5.2
+490,7,Universitas Muhammadiyah Yogyakarta,475,13.5
+212,7,"University of Agriculture, Faisalabad",214,24.1
+444,7,University of Calicut,425,7.2
+78,7,University of Delhi,77,50.0
+589,7,University of Jammu,575,5.5
+267,7,University of Madras,265,20.5
+195,7,University of Peshawar,197,26.1
+447,7,University of Shanghai for Science and Technology,425,8.0
+591,7,University of Suwon,575,2.9
+347,7,University of the Ryukyus,325,8.3
+183,7,Wuhan University of Technology,183,28.0
+349,7,Yangzhou University,325,5.5
+220,7,Zhengzhou University,220,23.4
+399,7,Zhongnan University of Economics and Law,375,8.6
+289,8,Amrita Vishwa Vidyapeetham,295,10.0
+98,8,Beijing Institute of Technology,99,45.0
+155,8,Beijing Jiaotong University,156,31.8
+164,8,China University of Geosciences,165,30.8
+234,8,China University of Petroleum¡ABeijing,236,22.3
+133,8,Chonnam National University,134,35.5
+35,8,Chulalongkorn University,36,72.4
+460,8,Dongseo University,475,5.4
+238,8,Feng Chia University,239,22.2
+235,8,Fu Jen Catholic University,236,22.3
+516,8,HanDong Global University,525,6.4
+217,8,Harbin Engineering University,218,23.5
+82,8,Hiroshima University,83,49.2
+305,8,Hong Kong Shue Yan University,325,9.7
+282,8,IIT BHU Varanasi,285,9.3
+101,8,Jeonbuk National University,102,43.9
+88,8,Jilin University,89,48.0
+152,8,Kanazawa University,153,32.3
+113,8,Konkuk University,114,40.3
+224,8,Kyoto Institute of Technology,226,22.8
+92,8,Kyungpook National University,93,46.2
+204,8,Macau University of Science and Technology,205,25.2
+42,8,Mahidol University,43,70.2
+210,8,Nanjing University of Aeronautics and Astronautics,212,24.5
+86,8,National Central University,87,48.2
+156,8,National Chung Cheng University,156,31.8
+117,8,National Chung Hsing University,118,39.0
+227,8,National Taiwan Ocean University,229,22.6
+46,8,National Yang Ming Chiao Tung University,47,66.9
+103,8,Pusan National University,104,43.5
+211,8,Rikkyo University,213,24.4
+322,8,Ritsumeikan Asia Pacific University,325,12.3
+297,8,SEGi UNIVERSITY,295,6.4
+387,8,SOKA University,375,9.1
+328,8,Shanghai Normal University,325,11.2
+83,8,Shanghai University,84,49.1
+151,8,Soochow University,152,32.6
+221,8,Sookmyung Women's University,223,23.3
+287,8,Tezpur University,285,5.8
+129,8,Tokyo Medical and Dental University (TMDU),130,36.2
+128,8,Universiti Malaysia Pahang,129,36.3
+199,8,University of Electronic Science and Technology of China,201,25.6
+346,8,University of Mysore,325,9.6
+135,8,University of Seoul,136,35.1
+258,8,Xi'an Jiaotong Liverpool University,255,13.2
+174,8,Yeungnam University,175,29.1
