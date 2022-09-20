@@ -5,14 +5,16 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import Normalizer
-#import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+
+# import matplotlib.pyplot as plt
 
 # constant
 color = ["b", "g", "r", "y", "m", "c", "k", "lime", "brown", "pink"]
 target_school = "National Central University"
 
 # mode: with reputation / without reputation
-mode = "without reputation"
+mode = "with reputation"
 
 
 def prepare_asia_data(in_frame):
@@ -21,25 +23,27 @@ def prepare_asia_data(in_frame):
 
     # Indicator: Reputation
     np_list = in_frame[["Academic Reputation", "Employer Reputation "]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.1 + x[1] * 0.1 for x in np_list]).reshape(1, -1)
+    # Special Weight
+    # temp = np.array([x[0] * 0.1 + x[1] * 0.1 for x in np_list]).reshape(1, -1)
     # Original Weight
-    # temp = np.array([x[0] * 0.3 + x[1] * 0.2 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 0.3 + x[1] * 0.2 for x in np_list]).reshape(1, -1)
     reputation_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=reputation_result[0], columns=["Reputation"])], axis=1)
 
     # Indicator: Scholar
-    np_list = in_frame[["Papers per Faculty", "Citations per Faculty ", "Faculty Staff with PhD"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 0.1 + x[1] * 0.1 + x[2] * 0.1 for x in np_list]).reshape(1, -1)
+    np_list = in_frame[["Papers per Faculty", "Citations per Faculty ", "Faculty Staff with PhD", "Faculty Student"]].fillna(0).to_numpy()
+    # Special Weight
+    # temp = np.array([x[0] * 0.1 + x[1] * 0.1 + x[2] * 0.1 + x[3] * 0.1for x in np_list]).reshape(1, -1)
     # Original Weight
-    # temp = np.array([x[0] * 0.1 + x[1] * 0.05 + x[2] * 0.05 for x in np_list]).reshape(1, -1)
+    temp = np.array([x[0] * 0.1 + x[1] * 0.05 + x[2] * 0.05 + x[3] * 0.1 for x in np_list]).reshape(1, -1)
     scholar_result = Normalizer(norm='max').fit_transform(X=temp)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=scholar_result[0], columns=["Scholar"])], axis=1)
 
     # Indicator: International
     np_list = in_frame[["International  Faculty", "International Students", "International Research Network",
                         "Inbound Exchange", "Outbound Exchange"]].fillna(0).to_numpy()
-    temp = np.array([x[0] * 1 + x[1] * 1 + x[2] * 1 + x[3] * 1 + x[4] * 1 for x in np_list
-                     ]).reshape(1, -1)
+    # Special Weight
+    # temp = np.array([x[0] * 1 + x[1] * 1 + x[2] * 1 + x[3] * 1 + x[4] * 1 for x in np_list]).reshape(1, -1)
     # Original Weight
     # temp = np.array([x[0] * 0.25 + x[1] * 0.025 + x[2] * 0.1 + x[3] * 0.025 + x[4] * 0.025 for x in np_list
     #                      ]).reshape(1, -1)
@@ -84,8 +88,10 @@ def qs_asia_fn(df):
     statistic_data = []
     for i in range(9):
         mask = df_out["Group"] == i
-        statistic_data.append([i, df_out[mask]["Rank_Asia"].mean(0), df_out[mask]["Rank_Asia"].std(0), df_out[mask].count(0).values[0]])
+        statistic_data.append(
+            [i, df_out[mask]["Rank_Asia"].mean(0), df_out[mask]["Rank_Asia"].std(0), df_out[mask].count(0).values[0]])
     pd.DataFrame(data=statistic_data, columns=["Group", "Mean", "Std", 'Count']).to_csv(path_or_buf="S_Result.csv")
+
 
 def prepare_the_asia_data(in_frame):
     # schools = in_frame[["School_Name"]]
@@ -158,7 +164,19 @@ def the_asia_fn(df):
     pd.DataFrame(data=statistic_data, columns=["Group", "Mean", "Std", 'Count']).to_csv(path_or_buf="S_Result.csv")
 
 
+def special_case(in_frame):
+    np_list = in_frame[["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]].fillna(0).to_numpy()
+    result = StandardScaler().fit_transform(X=np_list)
+    kmeans = KMeans(n_clusters=5, random_state=0).fit(result)
+    for ele in result:
+        K = kmeans.predict([ele])[0]
+        print(K)
+
+
 def main():
+    #df = pd.read_csv("Data/Taiwan_school.csv", encoding='unicode_escape')
+    #special_case(df)
+
     # load ranking data
     data_type = "QS"  # THE/QS
     df = pd.read_csv(f'Data/{data_type}_Asia.csv', encoding='unicode_escape')
