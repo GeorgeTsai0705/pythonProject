@@ -14,8 +14,8 @@ target_school = "National Central University"
 
 np.set_printoptions(precision=3, suppress=False)
 # mode: A(Reputation vs Scholar)；B(Reputation vs International)；C(Scholar vs International)
-mode = "C"
-data_type = "QS"  # THE/QS
+mode = "A"
+data_type = "THE"  # THE/QS
 k_cluster_num = 15
 
 def prepare_asia_data(in_frame):
@@ -123,7 +123,7 @@ def KMeanVisualize(data, classifier, mode):
     )
     plt.plot(data[:,0],data[:,1],"k.", markersize=2)
     centroids = classifier.cluster_centers_
-    """
+
     for ele in centroids:
         plt.text(
             ele[0],
@@ -131,7 +131,7 @@ def KMeanVisualize(data, classifier, mode):
             s = str(classifier.predict([ele])+1),
             c = 'white'
         )
-    """
+
     """
     plt.scatter(
         centroids[:,0],
@@ -192,8 +192,10 @@ def the_asia_fn(df):
 
     # choose mode
     labels = list(df_clean)
-    if mode == "with":
-        X_new = df_clean[[labels[2], labels[3], labels[4]]].to_numpy()
+    if mode == "A":
+        X_new = df_clean[[labels[2], labels[3]]].to_numpy()
+    elif mode == "B":
+        X_new = df_clean[[labels[2], labels[4]]].to_numpy()
     else:
         X_new = df_clean[[labels[3], labels[4]]].to_numpy()
 
@@ -204,18 +206,21 @@ def the_asia_fn(df):
     Target_Index = list(df_clean["School_Name"]).index(target_school)
     Target_values = X_new[Target_Index]
     Target_group = kmeans.predict([Target_values])[0]
-    print(Target_group)
+    print(f'{target_school} is in Group {Target_group}')
 
     # Find each group's members
     temp_list = []
     for i in range(len(X_new)):
         temp_list.append([kmeans.predict([X_new[i]])[0], list(df_clean["School_Name"])[i], list(df["Rank_Asia"])[i],
-                          list(df_clean["Overall"])[i]])
+                          X_new[i][0], X_new[i][1]])
 
     # Prepare output file for the k-mean result
-    df_out = pd.DataFrame(data=temp_list, columns=["Group", "School_Name", "Rank_Asia", 'Overall'])
+    df_out = pd.DataFrame(data=temp_list, columns=["Group", "School_Name", "Rank_Asia", 'A', 'B'])
     df_out.sort_values(by=["Group", "School_Name"], inplace=True)
     df_out.to_csv(path_or_buf="C_Result.csv")
+
+    # Draw Visualize Graph
+    KMeanVisualize(data=X_new, classifier=kmeans, mode= mode)
 
     # Calculate statistic parameters
     statistic_data = []
