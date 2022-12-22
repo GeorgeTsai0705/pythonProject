@@ -89,6 +89,7 @@ def qs_asia_fn(df):
 
     # Draw Visualize Graph
     KMeanVisualize(data=X_new, classifier=kmeans, mode= mode)
+    plt.show()
 
     # Calculate statistic parameters
     statistic_data = []
@@ -167,6 +168,7 @@ def the_asia_fn(df):
 
     # Draw Visualize Graph
     KMeanVisualize(data=X_new, classifier=kmeans, mode= mode)
+    plt.show()
 
     # Calculate statistic parameters
     statistic_data = []
@@ -177,35 +179,60 @@ def the_asia_fn(df):
     pd.DataFrame(data=statistic_data, columns=["Group", "Mean", "Std", 'Count']).to_csv(path_or_buf="S_Result.csv")
 
 
-def prepare_SEasia_data(in_frame):
+def prepare_SEasia_data(in_frame, TW_frame):
     df_temp = pd.DataFrame(data=in_frame[["School_Name", "Location", "Overall"]])
+    df_TW = pd.DataFrame(data=TW_frame[["School_Name", "Location", "Overall"]])
+    Std = StandardScaler()
 
     # Indicator: Reputation
     np_list = in_frame[["Academic Reputation", "Employer Reputation "]].fillna(0).to_numpy()
     # Normal Weight
     temp = np.array([x[0] * 0.5 + x[1] * 0.5 for x in np_list]).reshape(-1, 1)
-    reputation_result = StandardScaler().fit_transform(X=temp).reshape(1, -1)
+    reputation_result = Std.fit_transform(X=temp).reshape(1, -1)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=reputation_result[0], columns=["Reputation"])], axis=1)
+
+    # Process StandardScaler() for Taiwanese Data in Reputation
+    np_list = TW_frame[["Academic Reputation", "Employer Reputation "]].fillna(0).to_numpy()
+    temp = np.array([x[0] * 0.5 + x[1] * 0.5 for x in np_list]).reshape(-1, 1)
+    TW_reputation_result = Std.transform(X=temp).reshape(1, -1)
+    df_TW = pd.concat([df_TW, pd.DataFrame(data=TW_reputation_result[0], columns=["Reputation"])], axis=1)
 
     # Indicator: Scholar
     np_list = in_frame[["Faculty Student", "Citations per Faculty "]].fillna(0).to_numpy()
     # Normal Weight
     temp = np.array([x[0] * 0.5 + x[1] * 0.5 for x in np_list]).reshape(-1, 1)
-    scholar_result = StandardScaler().fit_transform(X=temp).reshape(1, -1)
+    scholar_result = Std.fit_transform(X=temp).reshape(1, -1)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=scholar_result[0], columns=["Scholar"])], axis=1)
+
+    # Process StandardScaler() for Taiwanese Data in Scholar
+    np_list = TW_frame[["Faculty Student", "Citations per Faculty "]].fillna(0).to_numpy()
+    temp = np.array([x[0] * 0.5 + x[1] * 0.5 for x in np_list]).reshape(-1, 1)
+    TW_scholar_result = Std.transform(X=temp).reshape(1, -1)
+    df_TW = pd.concat([df_TW, pd.DataFrame(data=TW_scholar_result[0], columns=["Scholar"])], axis=1)
+
 
     # Indicator: International
     np_list = in_frame[["International Faculty ", "International Students"]].fillna(0).to_numpy()
     # Normal Weight
     temp = np.array([x[0] * 0.5 + x[1] * 0.5 for x in np_list]).reshape(-1, 1)
-    international_result = StandardScaler().fit_transform(X=temp).reshape(1, -1)
+    international_result = Std.fit_transform(X=temp).reshape(1, -1)
     df_temp = pd.concat([df_temp, pd.DataFrame(data=international_result[0], columns=["International"])], axis=1)
 
-    return df_temp
+    # Process StandardScaler() for Taiwanese Data in International
+    np_list = TW_frame[["International Faculty ", "International Students"]].fillna(0).to_numpy()
+    temp = np.array([x[0] * 0.5 + x[1] * 0.5 for x in np_list]).reshape(-1, 1)
+    TW_international_result = Std.transform(X=temp).reshape(1, -1)
+    df_TW = pd.concat([df_TW, pd.DataFrame(data=TW_international_result[0], columns=["International"])], axis=1)
+    df_TW.to_csv(path_or_buf="TW_Result.csv")
+
+    return df_temp, df_TW
 
 def SEasia_fn(df):
+    # load Taiwanese University Data
+    dTW = pd.read_csv('Data/SEA_Asia(TW)_2023.csv', encoding='unicode_escape')
+
     # prepare initial data
-    df_clean = prepare_SEasia_data(df)
+    df_clean, dTW_clean = prepare_SEasia_data(df, dTW)
 
     # choose mode
     labels = list(df_clean)
@@ -217,12 +244,13 @@ def SEasia_fn(df):
         else:
             X_new = df_clean[[labels[4], labels[5]]].to_numpy()
 
-        """
+
         # 找出適當的分群數量
         kmeans_list = [KMeans(n_clusters=k, random_state=123).fit(X_new) for k in range(3, 8)]
         inertias = [model.inertia_ for model in kmeans_list]
 
-        # plot inertias vs K
+        """
+        # plot inertias vs K 
         plt.figure(1, figsize=(7, 4))
         plt.clf()
         plt.plot(list(range(3, 8)), inertias, 'bo-')
@@ -250,6 +278,14 @@ def SEasia_fn(df):
 
         # Draw Visualize Graph
         KMeanVisualize(data=X_new, classifier=kmeans, mode=loop)
+        if loop == 0:
+            plt.plot(dTW_clean["Reputation"].to_numpy(), dTW_clean["Scholar"].to_numpy(), 'rx', markersize=6)
+        elif loop == 1:
+            plt.plot(dTW_clean["Reputation"].to_numpy(), dTW_clean["International"].to_numpy(), 'rx', markersize=6)
+        else:
+            plt.plot(dTW_clean["Scholar"].to_numpy(), dTW_clean["International"].to_numpy(), 'rx', markersize=6)
+
+        plt.show()
 
 
 def special_case(in_frame):
@@ -261,11 +297,13 @@ def special_case(in_frame):
         print(K)
 
 def KMeanVisualize(data, classifier, mode):
-    h = 0.005
+    h = 0.01
 
     # Plot the decision boundary. For that, we will assign a color to each
-    x_min, x_max = data[:, 0].min() - 1,  data[:, 0].max() + 1
-    y_min, y_max = data[:, 1].min() - 1, data[:, 1].max() + 1
+    #x_min, x_max = data[:, 0].min() - 1,  data[:, 0].max() + 1
+    x_min = -3; x_max = 3;y_min = -3; y_max = 3
+
+    #y_min, y_max = data[:, 1].min() - 1, data[:, 1].max() + 1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min,y_max,h))
 
     # Obtain labels for each point in mesh
@@ -273,7 +311,7 @@ def KMeanVisualize(data, classifier, mode):
 
     # Put the result into a color plot
     Z = Z.reshape(xx.shape)
-    plt.figure(1,figsize=(7, 7))
+    plt.figure(1, figsize=(7, 7))
     plt.clf()
     plt.imshow(
         Z,
@@ -294,27 +332,16 @@ def KMeanVisualize(data, classifier, mode):
             c = 'white'
         )
 
-    """
-    plt.scatter(
-        centroids[:,0],
-        centroids[:,1],
-        marker='x',
-        s = 169,
-        linewidths=3,
-        color='w',
-        zorder=10 
-    )
-    """
-    print(mode)
     if mode == "A" or mode == 0:
         plt.xlabel(xlabel="Reputation", size='x-large');plt.ylabel(ylabel="Scholar",size='x-large');
     elif mode == "B" or mode == 1:
         plt.xlabel(xlabel="Reputation", size='x-large');plt.ylabel(ylabel="International", size='x-large');
     else:
         plt.xlabel(xlabel="Scholar", size='x-large');plt.ylabel(ylabel="International", size='x-large');
-    plt.xticks()
+    #plt.xticks()
     plt.yticks()
-    plt.show()
+    return plt
+
 
 def main():
     #df = pd.read_csv("Data/Taiwan_school.csv", encoding='unicode_escape')
