@@ -19,38 +19,51 @@ def train_model_classifier(df, dc):
     label = list(df)[1:]
     Wavelength = df["Wavelength"].to_numpy()
     df.drop(["Wavelength"], axis=1, inplace=True)
-    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 18)
+    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 15)
     x_data = data
     y_data = dc.to_numpy()[1][1:].astype(int)
 
     scaler = StandardScaler().fit(x_data)
     x_scaled = scaler.transform(x_data)
 
-    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.30, random_state=2)
+    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.30, random_state=7)
     # kernal function: ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’
 
     # Use SVC to classify Result
-    classifier = SVC(C=1.3, kernel='linear', gamma='auto', degree=3, probability=True, random_state=11)
-    model_process(classifier, X_train, X_test, y_train, y_test, "SVM Classifier", x_scaled, y_data)
-
+    classifier = SVC(C=0.7, kernel='linear', gamma='auto', degree=4, probability=True, random_state=15)
+    trained_out = model_process(classifier, X_train, X_test, y_train, y_test, "SVM Classifier", x_scaled, y_data)
+    # check_result(clf=trained, X=x_scaled, y= y_data, l = label)
 
     # Use Random Forest
     classifier = RandomForestClassifier(max_depth=4, criterion="entropy", n_estimators=90, random_state=123)
-    model_process(classifier, X_train, X_test, y_train, y_test, "Random Forest", x_scaled, y_data)
+    trained = model_process(classifier, X_train, X_test, y_train, y_test, "Random Forest", x_scaled, y_data)
+    # check_result(clf=trained, X=x_scaled, y=y_data, l = label)
 
     # Use MLPClassifier
-    classifier = MLPClassifier(hidden_layer_sizes=(3, 2), random_state=12, max_iter=3000,
-                               solver="adam", activation="identity")
-    model_process(classifier, X_train, X_test, y_train, y_test, "MLPClassifier", x_scaled, y_data)
+    classifier = MLPClassifier(hidden_layer_sizes=(5, 2), random_state=5, max_iter=8000, early_stopping=True,
+                               validation_fraction=0.25, solver="lbfgs", activation="identity")
+    trained = model_process(classifier, X_train, X_test, y_train, y_test, "MLPClassifier", x_scaled, y_data)
+    # check_result(clf=trained, X=x_scaled, y=y_data, l = label)
 
     # Use Gradient Boosting Classifier
-    classifier = GradientBoostingClassifier(n_estimators=120, learning_rate=0.005, max_depth=2,
+    classifier = GradientBoostingClassifier(n_estimators=35, learning_rate=0.005, max_depth=5,
                                             random_state=11, loss='deviance')
-    model_process(classifier, X_train, X_test, y_train, y_test, "Gradient Boosting Classifier", x_scaled, y_data)
+    trained = model_process(classifier, X_train, X_test, y_train, y_test, "Gradient Boosting Classifier", x_scaled,
+                            y_data)
+    # check_result(clf=trained, X=x_scaled, y=y_data, l = label)
+
+    return trained_out
+
+
+def check_result(clf, X, y, l):
+    for i in range(len(X)):
+        o = clf.predict([X[i]])
+        if o[0] != y[i]:
+            print(f"{l[i]}: ", f"Predict-> {o[0]}", f"Label-> {y[i]}")
 
 
 def train_model_regression(df, dc):
-    label = list(df)[1:]
+    list(df)[1:]
     Wavelength = df["Wavelength"].to_numpy()
     df.drop(["Wavelength"], axis=1, inplace=True)
     Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 10)
@@ -60,37 +73,36 @@ def train_model_regression(df, dc):
     scaler = StandardScaler().fit(x_data)
     x_scaled = scaler.transform(x_data)
 
-    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.20, random_state=25)
+    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.30, random_state=3)
 
     plt.figure(figsize=(10, 10))
 
     # Use SVR regression
-    regressor = SVR(C=0.8, kernel='linear', gamma='scale', degree=3)
+    regressor = SVR(C=0.2, kernel='linear', gamma='scale', degree=2, tol=0.00001)
     model_process_rg(regressor, X_train, X_test, y_train, y_test, "SVR Regression", 1)
 
     # Use Random Forest regression
-    regressor = RandomForestRegressor(n_estimators=120, max_depth=3)
+    regressor = RandomForestRegressor(n_estimators=90, max_depth=3)
     model_process_rg(regressor, X_train, X_test, y_train, y_test, "Random Forest Regression", 2)
 
     # Use MLPRegressor solver:{‘lbfgs’, ‘sgd’, ‘adam’} activation:{‘identity’, ‘logistic’, ‘tanh’, ‘relu’}
     regressor = MLPRegressor(hidden_layer_sizes=(4, 2), activation="identity", solver="lbfgs",
-                             max_iter=500, random_state=123)
+                             max_iter=1000, random_state=32)
     model_process_rg(regressor, X_train, X_test, y_train, y_test, "MLP Regression", 3)
 
     # Use GradientBoostingRegressor
-    regressor = GradientBoostingRegressor(learning_rate=0.03, n_estimators=160, max_depth=3,
+    regressor = GradientBoostingRegressor(learning_rate=0.04, n_estimators=75, max_depth=5,
                                           random_state=123, loss="huber")
     model_process_rg(regressor, X_train, X_test, y_train, y_test, "GradientBoosting Regression", 4)
 
     plt.show()
 
 
-def model_process_rg(clf, X_train, X_test, y_train, y_test, method, plot_num, x_scaled, y_data):
+def model_process_rg(clf, X_train, X_test, y_train, y_test, method, plot_num):
     start = time.process_time()
     clf.fit(X_train, y_train)
     r2 = clf.score(X_test, y_test)
     end = time.process_time()
-
 
     # Output setting
     print("*" * 35)
@@ -100,7 +112,7 @@ def model_process_rg(clf, X_train, X_test, y_train, y_test, method, plot_num, x_
 
     # Plot setting
     plt.subplot(2, 2, plot_num)
-    plt.plot(y_test, clf.predict(X_test), linestyle='', marker='o', mfc='b', ms='5')
+    plt.plot(y_test, clf.predict(X_test), linestyle='', marker='o', mfc='b', ms='4')
     plt.plot([1, 0], [1, 0], linestyle='--', lw=2, c="gray")
     plt.xlim([0, 1])
     plt.ylim([0, 1])
@@ -125,7 +137,7 @@ def model_process(clf, X_train, X_test, y_train, y_test, method, x_scaled, y_dat
     print(conf_matrix)
 
     cross_val = cross_val_score(clf, x_scaled, y_data, cv=5)
-    print(f"{method} cross: {cross_val}, avg: {np.average(cross_val)}")
+    print(f"{method} cross avg: {np.average(cross_val)}")
     return clf
 
 
@@ -149,12 +161,16 @@ def reduce_dimension(lambada: object, data: object, group_num: object) -> object
     return np.array(new_lambada), np.array(new_data)
 
 
+def special_reg(clf, df, dc):
+
+
+
 def main():
     # load data from csv file
     df = pd.read_csv('Temp_Alld_tline.csv', encoding='unicode_escape')
     dc = pd.read_csv('cPassResult.csv', encoding='unicode_escape')
-    train_model_classifier(df, dc)
-    # train_model_regression(df, dc)
+    trained_clf = train_model_classifier(df, dc)
+    train_model_regression(df, dc)
 
 
 if __name__ == '__main__':
