@@ -12,14 +12,14 @@ from sklearn.svm import SVC, SVR
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier, RandomForestRegressor, \
     GradientBoostingRegressor
-from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, r2_score, mean_absolute_error
 
 
 def train_model_classifier(df, dc):
     label = list(df)[1:]
     Wavelength = df["Wavelength"].to_numpy()
     df.drop(["Wavelength"], axis=1, inplace=True)
-    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 15)
+    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 50)
     x_data = data
     y_data = dc.to_numpy()[1][1:].astype(int)
 
@@ -30,7 +30,7 @@ def train_model_classifier(df, dc):
     # kernal function: ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’
 
     # Use SVC to classify Result
-    classifier = SVC(C=0.7, kernel='linear', gamma='auto', degree=4, probability=True, random_state=15)
+    classifier = SVC(C=1.1, kernel='linear', gamma='auto', degree=4, probability=True, random_state=15)
     trained_out = model_process(classifier, X_train, X_test, y_train, y_test, "SVM Classifier", x_scaled, y_data)
     # check_result(clf=trained, X=x_scaled, y= y_data, l = label)
 
@@ -46,13 +46,13 @@ def train_model_classifier(df, dc):
     # check_result(clf=trained, X=x_scaled, y=y_data, l = label)
 
     # Use Gradient Boosting Classifier
-    classifier = GradientBoostingClassifier(n_estimators=35, learning_rate=0.005, max_depth=5,
+    classifier = GradientBoostingClassifier(n_estimators=30, learning_rate=0.005, max_depth=5,
                                             random_state=11, loss='deviance')
-    trained = model_process(classifier, X_train, X_test, y_train, y_test, "Gradient Boosting Classifier", x_scaled,
-                            y_data)
+    model_process(classifier, X_train, X_test, y_train, y_test, "Gradient Boosting Classifier", x_scaled,
+                  y_data)
     # check_result(clf=trained, X=x_scaled, y=y_data, l = label)
 
-    return trained_out
+    return trained_out, x_scaled, y_data
 
 
 def check_result(clf, X, y, l):
@@ -66,59 +66,64 @@ def train_model_regression(df, dc):
     list(df)[1:]
     Wavelength = df["Wavelength"].to_numpy()
     df.drop(["Wavelength"], axis=1, inplace=True)
-    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 10)
+    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 50)
     x_data = data
     y_data = dc.to_numpy()[0][1:].astype("float16")
-
+    y_data_c = dc.to_numpy()[1][1:].astype("int")
     scaler = StandardScaler().fit(x_data)
     x_scaled = scaler.transform(x_data)
 
-    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.30, random_state=3)
+    y_max = max(y_data)
+    y_min = min(y_data)
+    #y_data = (y_data-y_min) / (y_max-y_min)
+
+    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.3, random_state=10, stratify=y_data_c)
 
     plt.figure(figsize=(10, 10))
 
     # Use SVR regression
-    regressor = SVR(C=0.2, kernel='linear', gamma='scale', degree=2, tol=0.00001)
-    model_process_rg(regressor, X_train, X_test, y_train, y_test, "SVR Regression", 1)
+    regressor = SVR(C=0.8, kernel='linear', gamma='auto', degree=2, tol=0.0001)
+    model_process_rg(regressor, X_train, X_test, y_train, y_test, "SVR Regression", 1, y_max, y_min)
 
     # Use Random Forest regression
-    regressor = RandomForestRegressor(n_estimators=90, max_depth=3)
-    model_process_rg(regressor, X_train, X_test, y_train, y_test, "Random Forest Regression", 2)
+    regressor = RandomForestRegressor(n_estimators=30, max_depth=4)
+    model_process_rg(regressor, X_train, X_test, y_train, y_test, "Random Forest Regression", 2, y_max, y_min)
 
     # Use MLPRegressor solver:{‘lbfgs’, ‘sgd’, ‘adam’} activation:{‘identity’, ‘logistic’, ‘tanh’, ‘relu’}
     regressor = MLPRegressor(hidden_layer_sizes=(4, 2), activation="identity", solver="lbfgs",
-                             max_iter=1000, random_state=32)
-    model_process_rg(regressor, X_train, X_test, y_train, y_test, "MLP Regression", 3)
+                             max_iter=10000, random_state=3, early_stopping=True)
+    model_process_rg(regressor, np.exp(X_train), np.exp(X_test), y_train, y_test, "MLP Regression", 3, y_max, y_min)
 
     # Use GradientBoostingRegressor
-    regressor = GradientBoostingRegressor(learning_rate=0.04, n_estimators=75, max_depth=5,
-                                          random_state=123, loss="huber")
-    model_process_rg(regressor, X_train, X_test, y_train, y_test, "GradientBoosting Regression", 4)
+    regressor = GradientBoostingRegressor(learning_rate=1, n_estimators=70, max_depth=2,
+                                          random_state=2, loss="huber", validation_fraction=0.2)
+    model_process_rg(regressor,X_train, X_test, y_train, y_test, "GradientBoosting Regression", 4, y_max, y_min)
 
     plt.show()
 
 
-def model_process_rg(clf, X_train, X_test, y_train, y_test, method, plot_num):
+def model_process_rg(rg, X_train, X_test, y_train, y_test, method, plot_num, y_max, y_min):
     start = time.process_time()
-    clf.fit(X_train, y_train)
-    r2 = clf.score(X_test, y_test)
+    rg.fit(X_train, y_train)
+    r2 = rg.score(X_test, y_test)
     end = time.process_time()
 
     # Output setting
     print("*" * 35)
     print(f"{method} training result")
     print(f"Training Time: {end - start:.3f} s")
-    print(f"R2: {r2}")
+    print(f"R2: {r2}, MAE: {mean_absolute_error(percent2IU(y_test), percent2IU(rg.predict(X_test)))}")
 
     # Plot setting
     plt.subplot(2, 2, plot_num)
-    plt.plot(y_test, clf.predict(X_test), linestyle='', marker='o', mfc='b', ms='4')
-    plt.plot([1, 0], [1, 0], linestyle='--', lw=2, c="gray")
-    plt.xlim([0, 1])
-    plt.ylim([0, 1])
+    plt.plot(percent2IU(y_test),  percent2IU(rg.predict(X_test)), linestyle='', marker='o', mfc='b', ms='4')
+    plt.plot([200, 0], [200, 0], linestyle='--', lw=2, c="gray")
+    plt.xlim([0, 200])
+    plt.ylim([0, 200])
+    plt.fill_between(x=[0, 200], y1=[20, 220], y2=[-20, 180], color='C0', alpha=0.1, label='Area')
     plt.title(method)
 
-    return clf
+    return rg
 
 
 def model_process(clf, X_train, X_test, y_train, y_test, method, x_scaled, y_data):
@@ -160,16 +165,87 @@ def reduce_dimension(lambada: object, data: object, group_num: object) -> object
         new_data.append(temp_data)
     return np.array(new_lambada), np.array(new_data)
 
+def percent2IU(a):
+    if type(a) == type([1]):
+        o = [np.exp(x*3.66)*6.0175 for x in a]
+        return o
+    else:
+        return np.exp(a*3.66)*6.0175
 
-def special_reg(clf, df, dc):
+def special_reg(df, dc):
+    # Train classifier first
+    Wavelength = df["Wavelength"].to_numpy()
+    df.drop(["Wavelength"], axis=1, inplace=True)
+    Wavelength, data = reduce_dimension(Wavelength, df.to_numpy(), 50)
+    x_data = data
+    y_data_c = dc.to_numpy()[3][1:].astype(int)
 
+    scaler = StandardScaler().fit(x_data)
+    x_scaled = scaler.transform(x_data)
+
+    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data_c, test_size=0.3, random_state=1, stratify=y_data_c)
+    # kernal function: ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’
+    # Use SVC to classify Result
+    classifier = SVC(C=1.0, kernel='linear', gamma='auto', degree=4, probability=True, random_state=1)
+    clf = model_process(classifier, X_train, X_test, y_train, y_test, "SVM Classifier", x_scaled, y_data_c)
+
+    # Try fit reg for MPOS data
+    newX = [];
+    newY = []
+    y_data = dc.to_numpy()[0][1:].astype("float16")
+    X_train, X_test, y_train, y_test = train_test_split(x_scaled, y_data, test_size=0.3, random_state=7, stratify=y_data_c)
+
+    # Use Random Forest regression
+    regressor = RandomForestRegressor(n_estimators=20, max_depth=5)
+    regressor.fit(X_train, y_train)
+    print(regressor.score(X_test, y_test))
+
+    # Use SVR regression
+    regressor2 = SVR(C=0.3, kernel='linear', gamma='scale', degree=2, tol=0.0001)
+    regressor2.fit(X_train, y_train)
+    r2 = regressor2.score(X_test, y_test)
+
+    print(f"Original R2: {r2}, MAE: {mean_absolute_error(percent2IU(y_test), percent2IU(regressor.predict(X_test)))}")
+
+    y_result = []
+    # use classifier to distinguish HPOS & NEG
+    for i in range(len(y_test)):
+        if clf.predict([X_test[i]]) == 0:
+            y_result.append(regressor2.predict([X_test[i]]))
+        else:
+            y_result.append(regressor.predict([X_test[i]]))
+    print(f"improve: {r2_score(y_test, y_result)}, MAE: {mean_absolute_error(percent2IU(y_test), percent2IU(y_result))}")
+
+    # Plot setting
+    plt.figure(figsize=(4, 6))
+    plt.subplot(2, 1, 1)
+    plt.plot(percent2IU(y_test), percent2IU(regressor.predict(X_test)), linestyle='', marker='o', mfc='b', ms='3')
+    plt.plot([200, 0], [200, 0], linestyle='--', lw=2, c="gray")
+    plt.xlim([0, 200])
+    plt.ylim([0, 200])
+    plt.xlabel("Measured")
+    plt.ylabel("Predicted")
+    plt.fill_between(x=[0, 200], y1=[20, 220], y2=[-20, 180], color='C0', alpha=0.1, label='Area')
+    plt.title('Original')
+
+    plt.subplot(2, 1, 2)
+    plt.plot(percent2IU(y_test), percent2IU(y_result), linestyle='', marker='o', mfc='b', ms='3')
+    plt.plot([200, 0], [200, 0], linestyle='--', lw=2, c="gray")
+    plt.xlim([0, 200])
+    plt.ylim([0, 200])
+    plt.xlabel("Measured")
+    plt.ylabel("Predicted")
+    plt.fill_between(x=[0, 200], y1=[20, 220], y2=[-20, 180], color='C0', alpha=0.1, label='Area')
+    plt.title('Improvement')
+    plt.show()
 
 
 def main():
     # load data from csv file
     df = pd.read_csv('Temp_Alld_tline.csv', encoding='unicode_escape')
     dc = pd.read_csv('cPassResult.csv', encoding='unicode_escape')
-    trained_clf = train_model_classifier(df, dc)
+    #trained_clf, newX, newY = train_model_classifier(df, dc)
+    #special_reg(df, dc)
     train_model_regression(df, dc)
 
 
