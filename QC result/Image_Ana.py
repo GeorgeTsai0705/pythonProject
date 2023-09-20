@@ -38,6 +38,9 @@ class BMPAnalyzer(tk.Tk):
         self.btn_plot = tk.Button(self, text="Plot", command=self.plot_graph)
         self.btn_plot.pack(pady=20)
 
+        self.btn_save_spectrum = tk.Button(self, text="Save Spectrum", command=self.save_spectrum)
+        self.btn_save_spectrum.pack(pady=20)
+
     def select_file(self):
         self.filepath = filedialog.askopenfilename(filetypes=[("BMP files", "*.bmp")])
         if self.filepath:
@@ -53,6 +56,28 @@ class BMPAnalyzer(tk.Tk):
         img = img.resize((250, 250))  # You can adjust the size if needed
         self.tk_image = ImageTk.PhotoImage(img)
         self.img_label.config(image=self.tk_image)
+
+    def save_spectrum(self):
+        # Check if start and end rows are entered
+        start_row_value = self.entry_start_row.get()
+        end_row_value = self.entry_end_row.get()
+
+        if not start_row_value or not end_row_value:
+            tk.messagebox.showerror("Error", "Please enter Start Row and End Row first!")
+            return
+
+        if self.mean_values is None:
+            tk.messagebox.showerror("Error", "Please plot the spectrum first!")
+            return
+
+        save_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
+        if not save_path:
+            return
+
+        with open(save_path, 'w') as f:
+            for value in self.mean_values:
+                f.write(str(value) + '\n')
+        print(f"Spectrum saved to {save_path}")
 
     def plot_graph(self):
         if not self.original_image:
@@ -84,6 +109,9 @@ class BMPAnalyzer(tk.Tk):
         # Calculate the mean values for the selected rows
         selected_rows = img_data[start_row:end_row + 1]
         mean_values = np.mean(selected_rows, axis=(0, 2))
+
+        # Store the mean_values to self after plotting
+        self.mean_values = mean_values
 
         # Plot
         plt.figure(figsize=(10, 5))
