@@ -1,7 +1,7 @@
 import sys
 import tkinter as tk
 from tkinter import filedialog
-
+from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -24,6 +24,11 @@ def read_numeric_data(filename):
             data.extend([float(num) for num in numbers])
 
     return np.array(data)
+
+def open_image():
+    img_path = "HgArSpectralExample.png"
+    img = Image.open(img_path)
+    img.show()
 
 def calculate_fwhm(spectrum, width, prominence):
     # 尋找峰值位置
@@ -54,6 +59,7 @@ def open_file():
     filename = filedialog.askopenfilename(filetypes=[('Text Files', '*.txt')])
     if filename:
         Spectrum = read_numeric_data(filename)
+        Spectrum = Spectrum - np.average(Spectrum[0:50])
         update_plot_and_results(Spectrum)
 
 def perform_fitting():
@@ -236,6 +242,10 @@ open_button.pack(side=tk.LEFT, padx=5)
 # 創建"Fitting"按鈕
 fitting_button = tk.Button(button_frame, text='Fitting', command=perform_fitting)
 fitting_button.pack(side=tk.LEFT, padx=5)
+
+# 在button_frame裡面添加新按鈕
+image_button = tk.Button(button_frame, text='Open Image', command=open_image)
+image_button.pack(side=tk.LEFT, padx=5)
 
 # 創建"Terminate"按鈕
 terminate_button = tk.Button(button_frame, text='Terminate', command=terminate_program)
