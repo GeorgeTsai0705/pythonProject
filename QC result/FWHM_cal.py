@@ -12,6 +12,7 @@ Standard_Wavelength = np.array([365.34, 406.15, 436.00, 545.79, 578.60, 696.56, 
                                 738.34, 750.66, 763.56, 772.34, 794.56, 800.98, 811.48, 826.63,
                                 842.33, 912.38, 922.18])
 
+
 def read_numeric_data(filename):
     data = []
 
@@ -99,7 +100,7 @@ def perform_fitting():
 
     # 更新拟合曲線圖形
     ax_fit.cla()
-    ax_fit.plot(Spectrum_peak, Standard_peak, 'bo', label='Points',ms=3)
+    ax_fit.plot(Spectrum_peak, Standard_peak, 'ro', label='Points',ms=3)
     ax_fit.plot(Spectrum_peak, f(Spectrum_peak), 'b--', label='Fitted Curve')
     ax_fit.set_xlabel('Standard_peak (nm)')
     ax_fit.set_ylabel('Spectrum_peak (pixel)')
