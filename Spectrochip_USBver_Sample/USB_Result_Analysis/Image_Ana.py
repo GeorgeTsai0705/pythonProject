@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageTk, ImageDraw
@@ -13,6 +13,10 @@ class BMPAnalyzer(tk.Tk):
 
         self.filepath = None
         self.original_image = None
+        self.mean_values = None
+
+        # 定義一元二次方程式的係數
+        self.coefficients = [0.00002946, 0.6312, 284.4]
 
         self.filename_label = tk.Label(self, text="", font=("Arial", 12, "bold"))  # label for showing filename
         self.filename_label.pack(pady=10)
@@ -26,13 +30,13 @@ class BMPAnalyzer(tk.Tk):
         self.lbl_start_row = tk.Label(self, text="Start Row:")
         self.lbl_start_row.pack(pady=5)
 
-        self.entry_start_row = tk.Entry(self)
+        self.entry_start_row = tk.Entry(self, width=10)
         self.entry_start_row.pack(pady=5)
 
         self.lbl_end_row = tk.Label(self, text="End Row:")
         self.lbl_end_row.pack(pady=5)
 
-        self.entry_end_row = tk.Entry(self)
+        self.entry_end_row = tk.Entry(self, width=10)
         self.entry_end_row.pack(pady=5)
 
         self.btn_plot = tk.Button(self, text="Plot", command=self.plot_graph)
@@ -66,38 +70,49 @@ class BMPAnalyzer(tk.Tk):
             tk.messagebox.showerror("Error", "Please enter Start Row and End Row first!")
             return
 
-        if self.mean_values is None:
+        if self.mean_values is None or self.original_image is None:
             tk.messagebox.showerror("Error", "Please plot the spectrum first!")
             return
+
+        # 計算圖片的 column indexes
+        indexes = np.arange(self.original_image.width)
+
+        # 使用一元二次方程式將 indexes 轉換成 wavelengths
+        wavelengths = self.coefficients[0] * indexes ** 2 + self.coefficients[1] * indexes + self.coefficients[2]
 
         save_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")])
         if not save_path:
             return
 
         with open(save_path, 'w') as f:
-            for value in self.mean_values:
-                f.write(str(value) + '\n')
+            f.write("Wavelength(nm)\tIntensity\n")  # 寫入標題
+            for w, i in zip(wavelengths, self.mean_values):
+                f.write(f"{format(w, '.2f')}\t{format(i, '.2f')}\n")  # 同時輸出 wavelength 和 intensity
         print(f"Spectrum saved to {save_path}")
 
     def plot_graph(self):
+
         if not self.original_image:
-            print("Please select a BMP file first!")
+            messagebox.showerror("Error", "Please select a BMP file first!")
             return
 
         try:
             start_row = int(self.entry_start_row.get())
             end_row = int(self.entry_end_row.get())
         except ValueError:
-            print("Please enter valid row values!")
+            messagebox.showerror("Error", "Please enter valid row values!")
             return
 
         img_data = np.array(self.original_image)
 
         # Check the validity of row values
-        if start_row < 0 or start_row >= img_data.shape[0] or end_row < 0 or end_row >= img_data.shape[
-            0] or start_row > end_row:
-            print("Invalid row values!")
+        if start_row < 0 or start_row >= img_data.shape[0] or end_row < 0 or end_row >= img_data.shape[0] or start_row > end_row:
+            messagebox.showerror("Error", "Invalid row values!")
             return
+
+        indexes = np.arange(self.original_image.width)
+        # 使用一元二次方程式將 indexes 轉換成 wavelengths
+        wavelengths = self.coefficients[0] * indexes ** 2 + self.coefficients[1] * indexes + self.coefficients[2]
 
         # Draw red lines on the image at the start and end rows
         img_with_lines = self.original_image.copy()
@@ -115,10 +130,10 @@ class BMPAnalyzer(tk.Tk):
 
         # Plot
         plt.figure(figsize=(10, 5))
-        plt.plot(mean_values)
+        plt.plot(wavelengths, mean_values)
         title = f"Average values of selected rows (Start Row: {start_row}, End Row: {end_row})"
         plt.title(title)
-        plt.xlabel("Column Index")
+        plt.xlabel("Wavelength (nm)")
         plt.ylabel("Average Value")
         plt.show()
 
