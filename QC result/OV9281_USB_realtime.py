@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import matplotlib.pyplot as plt
-import numpy
 import numpy as np
-from PIL import Image, ImageTk, ImageDraw
+from PIL import Image, ImageTk
 import cv2
 
 class VideoAnalyzer(tk.Tk):
@@ -24,12 +23,14 @@ class VideoAnalyzer(tk.Tk):
 
         self.entry_start_row = tk.Entry(self, width=10)
         self.entry_start_row.pack(pady=5)
+        self.entry_start_row.insert(0, '230')
 
         self.lbl_end_row = tk.Label(self, text="End Row:")
         self.lbl_end_row.pack(pady=5)
 
         self.entry_end_row = tk.Entry(self, width=10)
         self.entry_end_row.pack(pady=5)
+        self.entry_end_row.insert(0, '250')
 
         self.btn_plot = tk.Button(self, text="Plot", command=self.plot_graph)
         self.btn_plot.pack(pady=20)
@@ -41,15 +42,24 @@ class VideoAnalyzer(tk.Tk):
 
         self.capture_frame()
 
+    def get_row_range(self):
+        try:
+            start_row = int(self.entry_start_row.get())
+            end_row = int(self.entry_end_row.get())
+            return start_row, end_row
+        except ValueError:
+            tk.messagebox.showerror("Error", "Please enter valid numbers for Start Row and End Row.")
+            # Use default values if row values are not valid
+            return 230, 250
+
     def capture_frame(self):
         ret, frame = self.cap.read()  # Read a frame from the video
         if ret:
-            # Get the row range for ROI
-            try:
-                start_row = int(self.entry_start_row.get())
-                end_row = int(self.entry_end_row.get())
-            except ValueError:
-                # If the row values are not valid numbers, use default values
+            row_range = self.get_row_range()
+            if row_range is not None:
+                start_row, end_row = row_range
+            else:
+                # Use default values if row values are not valid
                 start_row, end_row = 0, frame.shape[0] - 1
 
             # Create a copy of the frame for drawing
@@ -70,12 +80,8 @@ class VideoAnalyzer(tk.Tk):
         self.img_label.config(image=self.tk_image)
 
     def save_spectrum(self):
-        # Check if start and end rows are entered
-        start_row_value = self.entry_start_row.get()
-        end_row_value = self.entry_end_row.get()
-
-        if not start_row_value or not end_row_value:
-            tk.messagebox.showerror("Error", "Please enter Start Row and End Row first!")
+        row_range = self.get_row_range()
+        if row_range is None:
             return
 
         if self.mean_values is None or self.original_image is None:
@@ -99,49 +105,36 @@ class VideoAnalyzer(tk.Tk):
         print(f"Spectrum saved to {save_path}")
 
     def plot_graph(self):
-
-        if not self.original_image:
-            messagebox.showerror("Error", "Please select a BMP file first!")
+        row_range = self.get_row_range()
+        if row_range is None or not self.original_image:
             return
 
-        try:
-            start_row = int(self.entry_start_row.get())
-            end_row = int(self.entry_end_row.get())
-        except ValueError:
-            messagebox.showerror("Error", "Please enter valid row values!")
-            return
-
+        start_row, end_row = row_range
         img_data = np.array(self.original_image)
 
         # Check the validity of row values
-        if start_row < 0 or start_row >= img_data.shape[0] or end_row < 0 or end_row >= img_data.shape[0] or start_row > end_row:
-            messagebox.showerror("Error", "Invalid row values!")
-            return
+        if 0 <= start_row < img_data.shape[0] and 0 <= end_row < img_data.shape[0] and start_row <= end_row:
+            indexes = np.arange(self.original_image.width)
+            # Convert indexes to wavelengths using the quadratic equation
+            wavelengths = self.coefficients[0] * indexes ** 2 + self.coefficients[1] * indexes + self.coefficients[2]
 
-        indexes = np.arange(self.original_image.width)
-        # Convert indexes to wavelengths using the quadratic equation
-        wavelengths = self.coefficients[0] * indexes ** 2 + self.coefficients[1] * indexes + self.coefficients[2]
+            # Calculate the mean values for the selected rows
+            selected_rows = img_data[start_row:end_row + 1]
+            mean_values = np.mean(selected_rows, axis=(0, 2))
 
-        # Calculate the mean values for the selected rows
-        selected_rows = img_data[start_row:end_row + 1]
-        mean_values = np.mean(selected_rows, axis=(0, 2))
-        print("selected_rows", numpy.shape(selected_rows))
-        print("selected_rows", selected_rows[0])
-        print("selected_rows", numpy.shape(selected_rows[0]))
-        print("selected_rows", mean_values)
-        print("selected_rows", numpy.shape(mean_values))
+            # Store the mean_values to self after plotting
+            self.mean_values = mean_values
 
-        # Store the mean_values to self after plotting
-        self.mean_values = mean_values
-
-        # Plot
-        plt.figure(figsize=(10, 5))
-        plt.plot(wavelengths, mean_values)
-        title = f"Average values of selected rows (Start Row: {start_row}, End Row: {end_row})"
-        plt.title(title)
-        plt.xlabel("Wavelength (nm)")
-        plt.ylabel("Average Value")
-        plt.show()
+            # Plot
+            plt.figure(figsize=(10, 5))
+            plt.plot(wavelengths, mean_values)
+            title = f"Average values of selected rows (Start Row: {start_row}, End Row: {end_row})"
+            plt.title(title)
+            plt.xlabel("Wavelength (nm)")
+            plt.ylabel("Average Value")
+            plt.show()
+        else:
+            tk.messagebox.showerror("Error", "Invalid row values!")
 
     def on_closing(self):
         self.cap.release()  # Release the video capture object
