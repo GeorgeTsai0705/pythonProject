@@ -1,16 +1,28 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import ttk, filedialog, messagebox
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageTk
 import cv2
+import time  # Import time for sleep
+import threading  # Import threading for async operations
 
 class VideoAnalyzer(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Real-Time Video Analyzer")
 
-        self.cap = cv2.VideoCapture(1)  # 1 indicates the second camera, use 0 for the default camera
+        self.cap = None  # Initialize the cap object as None
+
+        self.mean_values = None
+        self.coefficients = [0.00002946, 0.6312, 284.4]
+
+        self.available_cameras = self.find_available_cameras()
+        self.cmb_cameras = ttk.Combobox(self, values=self.available_cameras)
+        self.cmb_cameras.pack(pady=10)
+        if self.available_cameras:
+            self.cmb_cameras.current(0)  # Set default selection to the first available camera
+        self.cmb_cameras.bind("<<ComboboxSelected>>", self.on_camera_selection)
 
         self.mean_values = None
         self.coefficients = [0.00002946, 0.6312, 284.4]
@@ -42,6 +54,29 @@ class VideoAnalyzer(tk.Tk):
 
         self.capture_frame()
 
+    def find_available_cameras(self):
+        available_cameras = []
+        for i in range(10):  # Check indices 0 to 9
+            cap = cv2.VideoCapture(i)
+            if cap.isOpened():
+                available_cameras.append(f"USB {i}")
+                cap.release()  # Release the camera immediately after checking
+        return available_cameras
+
+    def on_camera_selection(self, event):
+        # Run the camera selection in a separate thread to avoid UI freezing
+        threading.Thread(target=self.async_camera_selection).start()
+
+    def async_camera_selection(self):
+        camera_index = int(self.cmb_cameras.get().split()[-1])  # Extract camera index from selection
+
+        if self.cap is not None and self.cap.isOpened():
+            self.cap.release()  # Release the previous camera if it's opened
+            time.sleep(0.5)  # Small delay to ensure previous camera is released
+
+        self.cap = cv2.VideoCapture(camera_index)
+        self.capture_frame()  # Start capturing from the newly selected camera
+
     def get_row_range(self):
         try:
             start_row = int(self.entry_start_row.get())
@@ -53,6 +88,8 @@ class VideoAnalyzer(tk.Tk):
             return 230, 250
 
     def capture_frame(self):
+        if self.cap is None or not self.cap.isOpened():  # Check if a camera is selected and opened
+            return
         ret, frame = self.cap.read()  # Read a frame from the video
         if ret:
             row_range = self.get_row_range()
