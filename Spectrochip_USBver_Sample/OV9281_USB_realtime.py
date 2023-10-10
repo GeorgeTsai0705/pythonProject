@@ -48,6 +48,10 @@ class VideoAnalyzer(tk.Tk):
         self.img_label = tk.Label(self)
         self.img_label.pack(pady=20)
 
+        # Pixel size display
+        self.pixel_size_label = tk.Label(self, text="Pixel Size: N/A x N/A")
+        self.pixel_size_label.pack(pady=10)
+
         # Frame for start and end rows
         self.row_frame = tk.Frame(self)
         self.row_frame.pack(pady=10)
@@ -57,14 +61,14 @@ class VideoAnalyzer(tk.Tk):
         self.lbl_start_row.grid(row=0, column=0, padx=5)
         self.entry_start_row = tk.Entry(self.row_frame, width=10)
         self.entry_start_row.grid(row=0, column=1, padx=5)
-        self.entry_start_row.insert(0, '230')
+        self.entry_start_row.insert(0, '355')
 
         # Label and Entry for end row
         self.lbl_end_row = tk.Label(self.row_frame, text="End Row:")
         self.lbl_end_row.grid(row=0, column=2, padx=5)
         self.entry_end_row = tk.Entry(self.row_frame, width=10)
         self.entry_end_row.grid(row=0, column=3, padx=5)
-        self.entry_end_row.insert(0, '250')
+        self.entry_end_row.insert(0, '375')
 
         # Buttons frame
         self.buttons_frame = tk.Frame(self)
@@ -77,6 +81,7 @@ class VideoAnalyzer(tk.Tk):
         # Button for saving spectrum
         self.btn_save_spectrum = tk.Button(self.buttons_frame, text="Save Spectrum", command=self.save_spectrum)
         self.btn_save_spectrum.pack(side=tk.LEFT, padx=5)
+
 
         # Quit button
         self.btn_quit = tk.Button(self.buttons_frame, text="Quit", command=self.on_closing)
@@ -107,6 +112,10 @@ class VideoAnalyzer(tk.Tk):
             time.sleep(0.5)
 
         self.cap = cv2.VideoCapture(camera_index)
+        desired_width = 1280
+        desired_height = 720
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, desired_width)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, desired_height)
         self.capture_frame()
 
     def on_closing(self):
@@ -135,13 +144,21 @@ class VideoAnalyzer(tk.Tk):
             cv2.rectangle(frame_copy, (0, start_row), (frame.shape[1] - 1, end_row), (0, 0, 255), 1)
             self.original_image = Image.fromarray(frame)
             self.update_image_label(Image.fromarray(cv2.cvtColor(frame_copy, cv2.COLOR_BGR2RGB)))
+            self.pixel_size_label.config(text=f"Pixel Size: {frame.shape[1]} x {frame.shape[0]}")
+
 
         if self.winfo_exists():
             self.after(10, self.capture_frame)
 
     def update_image_label(self, img):
         """Update image in the tkinter UI."""
-        img = img.resize((640, 480))
+        # Desired display size (e.g., 640x480)
+        desired_width = 640
+        desired_height = 480
+
+        # Resize the image for display but not for analysis
+        img = img.resize((desired_width, desired_height), Image.ANTIALIAS)
+
         self.tk_image = ImageTk.PhotoImage(img)
         self.img_label.config(image=self.tk_image)
 
