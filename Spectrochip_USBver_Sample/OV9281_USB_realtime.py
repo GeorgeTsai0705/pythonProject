@@ -112,6 +112,7 @@ class VideoAnalyzer(tk.Tk):
             time.sleep(0.5)
 
         self.cap = cv2.VideoCapture(camera_index)
+        """Pixel Setting for OV9281"""
         desired_width = 1280
         desired_height = 720
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, desired_width)
@@ -126,11 +127,22 @@ class VideoAnalyzer(tk.Tk):
 
     def get_row_range(self):
         """Get start and end row values."""
+        start_row, end_row = 0, 0  # Default fallback values
         try:
-            return int(self.entry_start_row.get()), int(self.entry_end_row.get())
+            start_row = int(self.entry_start_row.get())
         except ValueError:
-            messagebox.showerror("Error", "Please enter valid numbers for Start Row and End Row.")
-            return 230, 250  # Default values
+            messagebox.showerror("Error", "Please enter a valid number for Start Row.")
+            self.entry_start_row.delete(0, tk.END)
+            self.entry_start_row.insert(0, '0')
+
+        try:
+            end_row = int(self.entry_end_row.get())
+        except ValueError:
+            messagebox.showerror("Error", "Please enter a valid number for End Row.")
+            self.entry_end_row.delete(0, tk.END)
+            self.entry_end_row.insert(0, '0')
+
+        return start_row, end_row
 
     def capture_frame(self):
         """Capture video frames and display in UI."""
