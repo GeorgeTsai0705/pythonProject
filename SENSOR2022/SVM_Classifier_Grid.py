@@ -64,4 +64,4 @@ for params in ParameterGrid(param_grid):
     })
 
 results_df = pd.DataFrame(results)
-results_df.to_csv('svm_evaluation_results.csv', index=False)
+results_df.to_csv('Grid_Result\svm_evaluation_results.csv', index=False)
