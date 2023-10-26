@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split, ParameterGrid
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import time
 
 
@@ -28,10 +28,10 @@ X_train, X_test, y_train, y_test = train_test_split(X_data, Y_result, test_size=
 param_grid = {
     'hidden_layer_sizes': [(3,), (5,), (5, 3), (3, 2), (7, 3), (4, 2)],
     'activation': ['relu', 'tanh', 'logistic'],
-    'solver': ['adam', 'sgd'],
-    'alpha': [0.0001, 0.001, 0.01, 0.1],
+    'solver': ['adam', 'sgd', 'lbfgs'],
+    'alpha': [ 0.01, 0.05, 0.1, 1],
     'learning_rate': ['constant', 'invscaling', 'adaptive'],
-    'max_iter': [500],
+    'max_iter': [2500],
     'early_stopping': [True]
 }
 
@@ -46,6 +46,7 @@ for params in ParameterGrid(param_grid):
 
     y_pred = mlp.predict(X_test)
 
+    cm = confusion_matrix(y_test, y_pred).ravel()  # 將混淆矩陣轉為1D
     acc = accuracy_score(y_test, y_pred)
     prec = precision_score(y_test, y_pred, average='macro', zero_division=0)
     rec = recall_score(y_test, y_pred, average='macro', zero_division=0)
@@ -61,7 +62,8 @@ for params in ParameterGrid(param_grid):
         'Test Accuracy': acc,
         'Test Precision': prec,
         'Test Recall': rec,
-        'Test F1 Score': f1
+        'Test F1 Score': f1,
+        'Confusion Matrix': list(cm)
     })
 
     model_counter += 1
@@ -69,4 +71,9 @@ for params in ParameterGrid(param_grid):
         print(f"已完成訓練 {model_counter} 個模型")
 
 results_df = pd.DataFrame(results)
-results_df.to_csv('Grid_Result/mlp_evaluation_results.csv', index=False)
+
+# 根據 Accuracy、F1 Score、Training Time 進行排序
+results_df = results_df.sort_values(by=['Test Accuracy', 'Test F1 Score', 'Training Time'],
+                                    ascending=[False, False, True])
+
+results_df.to_csv('Grid_Result/mlp_evaluation_sorted_results.csv', index=False)

@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split, ParameterGrid
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import time
 
 
@@ -38,6 +38,7 @@ param_grid = {
 }
 
 results = []
+model_counter = 0
 for params in ParameterGrid(param_grid):
     svm = SVC(**params)
     start_time = time.time()
@@ -47,6 +48,7 @@ for params in ParameterGrid(param_grid):
 
     y_pred = svm.predict(X_test_pca)
 
+    cm = confusion_matrix(y_test, y_pred).ravel()  # 將混淆矩陣轉為1D
     acc = accuracy_score(y_test, y_pred)
     prec = precision_score(y_test, y_pred, average='macro', zero_division=0)
     rec = recall_score(y_test, y_pred, average='macro', zero_division=0)
@@ -60,8 +62,18 @@ for params in ParameterGrid(param_grid):
         'Test Accuracy': acc,
         'Test Precision': prec,
         'Test Recall': rec,
-        'Test F1 Score': f1
+        'Test F1 Score': f1,
+        'Confusion Matrix': list(cm)
     })
 
+    model_counter += 1
+    if model_counter % 5 == 0:
+        print(f"已完成訓練 {model_counter} 個模型")
+
 results_df = pd.DataFrame(results)
-results_df.to_csv('Grid_Result\svm_evaluation_results.csv', index=False)
+
+# 根據 Accuracy、F1 Score、Training Time 進行排序
+results_df = results_df.sort_values(by=['Test Accuracy', 'Test F1 Score', 'Training Time'],
+                                    ascending=[False, False, True])
+
+results_df.to_csv('Grid_Result\svm_evaluation_sorted_results.csv', index=False)
