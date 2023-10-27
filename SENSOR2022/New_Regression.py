@@ -1,74 +1,65 @@
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
+from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error
-
+from sklearn.metrics import mean_squared_error, r2_score
+import time
 
 def load_data():
-    """
-    Load spectral data and cPassResult data.
-    Returns:
-        X_data: Feature data
-        Y_result: Target data
-    """
     spectral_data = pd.read_csv('SpectralData.csv', header=None)
     c_pass_result = pd.read_csv('cPassResult.csv', header=None)
-
-    wave_length = spectral_data.iloc[1:, 0].tolist()
     X_data = np.transpose(spectral_data.iloc[1:, 1:])
-
-    # Assuming sample_names might be used in future, keeping it here
-    sample_names = c_pass_result.iloc[0, 1:]
     Y_result = c_pass_result.iloc[3, 1:].values.ravel()
-
     return X_data, Y_result
 
+def apply_pca(X_train, X_test, n_components=10):
+    pca = PCA(n_components=n_components)
+    X_train_pca = pca.fit_transform(X_train)
+    X_test_pca = pca.transform(X_test)
+    return X_train_pca, X_test_pca
 
 def plot_predictions_vs_actual(y_test, predictions, model_name):
-    """
-    Plot predicted values against actual values.
-    """
 
+    # Set the default font to "Times New Roman"
+    matplotlib.rcParams['font.family'] = "Times New Roman"
+
+    plt.figure(figsize=(7, 7))
     y_test = list(map(float, y_test))
-    print(y_test, predictions)
-    plt.scatter(x= list(map(float, y_test)), y= predictions, c='r', marker='o', s=20)
-    plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color='red')  # Diagonal line
-    print([min(y_test), max(y_test)], [min(y_test), max(y_test)])
-    plt.title(f"{model_name} - Actual vs. Predicted")
-    plt.xlabel("Actual Values")
-    plt.ylabel("Predicted Values")
-    [min(y_test), max(y_test)], [min(y_test), max(y_test)]
+    y_pred = list(map(float, predictions))
+    plt.scatter(y_test, y_pred, alpha=0.75, s=20)
+    plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')  # Diagonal line
+
+    # Set the title with increased font size
+    plt.title(f"{model_name} - Actual vs. Predicted", fontsize=20)
+
+    # Set x and y labels with increased font size
+    plt.xlabel("Measured Neutralizing Antibody (IU/ml)", fontsize=15)
+    plt.ylabel("Predicted Neutralizing Antibody (IU/ml)", fontsize=15)
+
+    # Set the tick parameters with increased font size
+    plt.tick_params(axis='both', which='major', labelsize=15)
+
     plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
     plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-    plt.grid(True)
+
+    plt.grid(False)
     plt.show()
 
-
-def plot_mse_comparison(results):
+def save_to_csv(name, result):
     """
-    Plot MSE comparison for each model.
+    Save the Predicted and Actual results to a CSV.
     """
-    names = list(results.keys())
-    mses = [res["MSE"] for res in results.values()]
-
-    plt.figure(figsize=(10, 6))
-    plt.bar(names, mses, color=['blue', 'green', 'red'])
-    plt.title("MSE Comparison Among Models")
-    plt.ylabel("MSE")
-    plt.gca().xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-    plt.gca().yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-    plt.grid(axis='y')
-    plt.show()
-
-
-# Load data and split into training and test sets
-X_data, Y_result = load_data()
-X_train, X_test, y_train, y_test = train_test_split(X_data, Y_result, test_size=0.2, random_state=42)
+    df = pd.DataFrame({
+        "Actual": result["Actual"],
+        "Predicted": result["Predicted"]
+    })
+    df.to_csv(f"Grid_result/best_results_{name}.csv", index=False)
 
 # Define parameters for the models
 MODEL_PARAMS = {
@@ -95,21 +86,42 @@ MODEL_PARAMS = {
     }
 }
 
-# Create models with the specified parameters
-models = {name: model_class(**params) for name, (model_class, params) in zip(MODEL_PARAMS.keys(), [(SVR, MODEL_PARAMS['SVR']), (RandomForestRegressor, MODEL_PARAMS['RandomForestRegressor']), (MLPRegressor, MODEL_PARAMS['MLPRegressor'])])}
+X_data, Y_result = load_data()
+best_results = {
+    "SVR": {"MSE": float("inf"), "Time": float("inf"), "R2": -float("inf")},
+    "RandomForestRegressor": {"MSE": float("inf"), "Time": float("inf"), "R2": -float("inf")},
+    "MLPRegressor": {"MSE": float("inf"), "Time": float("inf"), "R2": -float("inf")}
+}
 
-# Train each model, make predictions, and collect results
-results = {}
-for name, model in models.items():
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    mse = mean_squared_error(y_test, y_pred)
-    results[name] = {
-        "Predicted": y_pred,
-        "MSE": mse
-    }
-    print(f"{name}: MSE: {mse}")
-    plot_predictions_vs_actual(y_test, y_pred, name)
+for i in range(10):
+    X_train, X_test, y_train, y_test = train_test_split(X_data, Y_result, test_size=0.2, random_state=i)
+    X_train_pca, X_test_pca = apply_pca(X_train, X_test)
 
-# Plot MSE comparison
-plot_mse_comparison(results)
+    for name, params in MODEL_PARAMS.items():
+        ModelClass = eval(name)
+        model = ModelClass(**params)
+
+        start_time = time.time()
+        model.fit(X_train_pca, y_train)
+        end_time = time.time()
+
+        y_pred = model.predict(X_test_pca)
+        mse = mean_squared_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+        elapsed_time = end_time - start_time
+
+        print(f"Data Split {i + 1}, Model {name}: MSE: {mse}, R2 Score: {r2}, Time: {elapsed_time} seconds")
+
+        if mse < best_results[name]["MSE"]:
+            best_results[name] = {
+                "MSE": mse,
+                "Time": elapsed_time,
+                "R2": r2,
+                "Predicted": y_pred,
+                "Actual": y_test
+            }
+
+for name, result in best_results.items():
+    print(f"Best Results for {name}: MSE: {result['MSE']}, Time: {result['Time']} seconds, R2 Score: {result['R2']}")
+    plot_predictions_vs_actual(result["Actual"], result["Predicted"], name)
+    save_to_csv(name, result)
