@@ -106,20 +106,20 @@ plot_pca_variance(pca.explained_variance_ratio_)
 
 # SVM 參數
 svm_params = {
-    'C': 1.0,  # 正則化參數。值越小，模型的正則化強度越大。
+    'C': 100,  # 正則化參數。值越小，模型的正則化強度越大。
     'kernel': 'linear',  # 指定算法的核。選項有'linear', 'poly', 'rbf', 'sigmoid', 'precomputed'或可調用。
     'degree': 3,  # 如果kernel設置為'poly'，則它是多項式的度數。
-    'gamma': 'scale',  # 'poly', 'rbf', 'sigmoid'的核的係數。'scale'或'auto'。
+    'gamma': 'auto',  # 'poly', 'rbf', 'sigmoid'的核的係數。'scale'或'auto'。
     'coef0': 0.0,  # kernel函數中的獨立項。只對'poly'和'sigmoid'有效。
     'shrinking': True  # 是否使用shrinking heuristic（縮小啟發式方法）。
 }
 
 # 隨機森林參數
 rf_params = {
-    'n_estimators': 100,  # 森林中樹的數量。
+    'n_estimators': 5,  # 森林中樹的數量。
     'criterion': 'gini',  # 分裂質量的功能。可以是"gini"或"entropy"。
-    'max_depth': None,  # 樹的最大深度。
-    'min_samples_split': 2,  # 分裂內部節點所需的最小樣本數。
+    'max_depth': 3,  # 樹的最大深度。
+    'min_samples_split': 5,  # 分裂內部節點所需的最小樣本數。
     'min_samples_leaf': 1,  # 葉節點所需的最小樣本數。
     'max_features': 'sqrt',  # 尋找最佳分裂時要考慮的特徵數。
     'bootstrap': True,  # 是否在構建樹時使用bootstrap樣本。
@@ -130,23 +130,24 @@ rf_params = {
 
 # MLP 參數
 mlp_params = {
-    'hidden_layer_sizes': (100,),  # 隱藏層的大小。
+    'hidden_layer_sizes': (7,3),  # 隱藏層的大小。
     'activation': 'relu',  # 激活函數。可以是'identity', 'logistic', 'tanh', 或 'relu'。
-    'solver': 'adam',  # 優化權重的算法。可以是'lbfgs', 'sgd'或'adam'。
-    'alpha': 0.0001,  # L2懲罰的參數值（正則化項）。
+    'solver': 'lbfgs',  # 優化權重的算法。可以是'lbfgs', 'sgd'或'adam'。
+    'alpha': 0.1,  # L2懲罰的參數值（正則化項）。
     'batch_size': 'auto',  # 優化時的小批量的大小。
     'learning_rate': 'constant',  # 學習速率的計劃。
     'learning_rate_init': 0.001,  # 初始學習速率。
-    'max_iter': 200,  # 最大迭代次數。
+    'max_iter': 2500,  # 最大迭代次數。
     'shuffle': True,  # 在每次迭代時是否應隨機重排序樣本。
     'random_state': None,  # 狀態或種子的隨機生成。
+    'early_stopping': True,
     'tol': 1e-4  # 優化的容忍度。
 }
 
 
 models = {
     'SVM': svm.SVC(**svm_params),
-    '隨機森林': RandomForestClassifier(**rf_params),
+    'RandomForest': RandomForestClassifier(**rf_params),
     'MLP': MLPClassifier(**mlp_params)
 }
 

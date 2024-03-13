@@ -1,11 +1,13 @@
-import numpy as np
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.decomposition import PCA
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler  # 標準化資料
 
 def load_data():
     spectral_data = pd.read_csv('SpectralData.csv', header=None)
@@ -16,12 +18,19 @@ def load_data():
 
     return X_data, Y_result
 
-def create_threshold_labels(Y_result, threshold):
-    return [1 if y > threshold else 0 for y in Y_result]
+def create_threshold_labels(Y_result, threshold_1, threshold_2):
+    return [1 if threshold_2 > y > threshold_1 else 0 for y in Y_result]
+
+
 
 def apply_pca(X_data, n_components=5):
-    pca = PCA(n_components=n_components)
-    return pca.fit_transform(X_data)
+    # 先進行標準化
+    scaler = StandardScaler()
+    X_data_scaled = scaler.fit_transform(X_data)
+
+    pca = PCA(n_components=0.99)
+    return pca.fit_transform(X_data_scaled)
+
 
 def train_classifier(X_train, y_train, model_class, model_params):
     best_model = None
@@ -35,8 +44,23 @@ def train_classifier(X_train, y_train, model_class, model_params):
             best_accuracy = accuracy
             best_model = model
 
-    print(f"Training {model_class.__name__}: Accuracy: {best_accuracy}")
+    # 計算和打印驗證指標
+    y_pred = best_model.predict(X_train)
+    precision = precision_score(y_train, y_pred)
+    recall = recall_score(y_train, y_pred)
+    f1 = f1_score(y_train, y_pred)
+    conf_matrix = confusion_matrix(y_train, y_pred)
+
+    print(f"Training {model_class.__name__}:")
+    print(f"Accuracy: {best_accuracy}")
+    print(f"Precision: {precision}")
+    print(f"Recall: {recall}")
+    print(f"F1 Score: {f1}")
+    print("Confusion Matrix:")
+    print(conf_matrix)
+
     return best_model
+
 
 def train_regressor(X_train, y_train, model_class, model_params):
     best_model = None
@@ -56,21 +80,12 @@ def train_regressor(X_train, y_train, model_class, model_params):
             best_r2 = r2
             best_model = model
 
-    print(f"Training {model_class.__name__}: MSE: {best_mse}, R2 Score: {best_r2}")
+    print(f"Training {model_class.__name__}: MSE: {best_mse}, R2 Score: {best_r2:.3f}")
     return best_model
 
+
 def main():
-    X_data, Y_result = load_data()
-    X_data_pca = apply_pca(X_data)
-    labels = create_threshold_labels(Y_result, threshold=np.median(Y_result))
-    X_train, X_test, y_train, y_test, labels_train, labels_test = train_test_split(
-        X_data_pca,
-        Y_result,
-        labels,
-        test_size=0.2,
-        random_state=42,
-        stratify=labels
-    )
+
     MLP_CLASSIFIER_PARAMS = {
         'hidden_layer_sizes': (7, 3),  # 隱藏層的大小。
         'activation': 'relu',  # 激活函數。可以是'identity', 'logistic', 'tanh', 或 'relu'。
@@ -85,19 +100,6 @@ def main():
         'early_stopping': True,
         'tol': 1e-4  # 優化的容忍度。
     }
-
-    classifier = train_classifier(X_train, labels_train, MLPClassifier, MLP_CLASSIFIER_PARAMS)
-    classifier_labels = classifier.predict(X_test)
-
-    # 確保 X_train 是 DataFrame，且 labels_train 也是相同的索引
-    X_train_df = pd.DataFrame(X_train)
-    labels_train_df = pd.Series(labels_train, index=X_train_df.index)
-
-    rf_X_train = X_train_df[labels_train_df == 1].values
-    rf_y_train = y_train[labels_train_df == 1]
-
-    mlp_X_train = X_train_df[labels_train_df == 0].values
-    mlp_y_train = y_train[labels_train_df == 0]
 
     RF_REGRESSOR_PARAMS = {
         'n_estimators': 15,
@@ -116,26 +118,84 @@ def main():
         'max_iter': 3500,
         'early_stopping': True
     }
+    X_data, Y_result = load_data()
+    X_data_pca = apply_pca(X_data)
+    print(f"PCA Result {np.shape(X_data_pca)}")
 
-    rf_regressor = train_regressor(rf_X_train, rf_y_train, RandomForestRegressor, RF_REGRESSOR_PARAMS)
-    mlp_regressor = train_regressor(mlp_X_train, mlp_y_train, MLPRegressor, MLP_REGRESSOR_PARAMS)
+    best_mae = float('inf')
+    best_threshold = None
+    best_combined_predictions = None
+    best_ytest = None
+    best_R2score = None
 
-    combined_predictions = []
-    for i, label in enumerate(classifier_labels):
-        if label == 1:
-            combined_predictions.append(rf_regressor.predict([X_test[i]])[0])
-        else:
-            combined_predictions.append(mlp_regressor.predict([X_test[i]])[0])
+    for threshold_1 in range(30, 80, 3):
+        for threshold_2 in range(130, 181, 3):
+            if threshold_1 != threshold_2:  # 只有当两个阈值不相等时才进行计算
+                labels = create_threshold_labels(Y_result, threshold_1, threshold_2)
 
-    # Visualization
+                X_train, X_test, y_train, y_test, labels_train, labels_test = train_test_split(
+                    X_data_pca,
+                    Y_result,
+                    labels,
+                    test_size=0.2,
+                    random_state=47,
+                    stratify=labels
+                )
+
+                classifier = train_classifier(X_train, labels_train, MLPClassifier, MLP_CLASSIFIER_PARAMS)
+                classifier_labels = classifier.predict(X_test)
+
+                X_train_df = pd.DataFrame(X_train)
+                labels_train_df = pd.Series(labels_train, index=X_train_df.index)
+
+                rf_X_train = X_train_df[labels_train_df == 1].values
+                rf_y_train = y_train[labels_train_df == 1]
+                mlp_X_train = X_train_df[labels_train_df == 0].values
+                mlp_y_train = y_train[labels_train_df == 0]
+
+                rf_regressor = train_regressor(rf_X_train, rf_y_train, RandomForestRegressor, RF_REGRESSOR_PARAMS)
+                mlp_regressor = train_regressor(mlp_X_train, mlp_y_train, MLPRegressor, MLP_REGRESSOR_PARAMS)
+
+                combined_predictions = []
+                for i, label in enumerate(classifier_labels):
+                    if label == 1:
+                        combined_predictions.append(rf_regressor.predict([X_test[i]])[0])
+                    else:
+                        combined_predictions.append(mlp_regressor.predict([X_test[i]])[0])
+
+                mae = mean_absolute_error(y_test, combined_predictions)
+                print(f"Threshold: {threshold_1, threshold_2}, Combined Model MAE: {mae}")
+
+                if mae < best_mae:
+                    best_mae = mae
+                    best_threshold = [threshold_1, threshold_2]
+                    best_combined_predictions = combined_predictions
+                    best_ytest = y_test
+                    best_R2score = r2_score(y_test, best_combined_predictions)
+
+    print(f"Best Threshold: {best_threshold}, Best MAE: {best_mae}, Best R2: {best_R2score}")
+
+    # 若需要，您還可以視覺化最佳模型的結果
     plt.figure(figsize=(12, 7))
-    plt.scatter(y_test, combined_predictions, alpha=0.5)
-    plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], color='red')  # Diagonal line
+    plt.scatter(best_ytest, best_combined_predictions, alpha=0.5)
+    plt.plot([min(best_ytest), max(best_ytest)], [min(best_ytest), max(best_ytest)], color='red')  # Diagonal line
     plt.title("Actual vs. Predicted")
     plt.xlabel("Actual Values")
     plt.ylabel("Predicted Values")
     plt.grid(True)
     plt.show()
+
+    # 將最佳模型的結果存儲到DataFrame
+    results_df = pd.DataFrame({
+        'Actual_Values': best_ytest,
+        'Predicted_Values': best_combined_predictions
+    })
+
+    # 將DataFrame輸出到CSV文件
+    results_df.to_csv('Grid_Result/best_model_results.csv', index=False)
+
+    print("Best model results saved to 'best_model_results.csv'.")
+
 
 if __name__ == "__main__":
     main()

@@ -22,7 +22,8 @@ def load_data():
 
 # === 主程式區域 ===
 X_data, Y_result = load_data()
-X_train, X_test, y_train, y_test = train_test_split(X_data, Y_result, test_size=0.2, random_state=42)
+indices = np.arange(len(X_data))
+X_train, X_test, y_train, y_test, train_indices, test_indices = train_test_split(X_data, Y_result, indices, test_size=0.2, random_state=42)
 
 # 定義要進行grid搜尋的參數
 param_grid = {
@@ -63,7 +64,8 @@ for params in ParameterGrid(param_grid):
         'Test Precision': prec,
         'Test Recall': rec,
         'Test F1 Score': f1,
-        'Confusion Matrix': list(cm)
+        'Confusion Matrix': list(cm),
+        'Test Indices': test_indices.tolist()  # 把 numpy array 轉成 list
     })
 
     model_counter += 1

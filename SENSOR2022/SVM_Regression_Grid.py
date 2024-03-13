@@ -26,14 +26,14 @@ X_data, Y_result = load_data()
 X_train, X_test, y_train, y_test = train_test_split(X_data, Y_result, test_size=0.2, random_state=42)
 
 # 套用 PCA 降維
-pca = PCA(n_components=5)
+pca = PCA(n_components=0.99)
 X_train_pca = pca.fit_transform(X_train)
 X_test_pca = pca.transform(X_test)
 
 # 定義要進行grid搜尋的參數
 param_grid = {
-    'C': [0.1, 1, 10, 100],
-    'gamma': ['scale', 'auto', 0.1, 1, 10],
+    'C': [5, 10, 20, 30, 40, 50, 60],
+    'gamma': ['scale', 'auto', 0.7, 1, 2, 4],
     'kernel': ['linear', 'rbf', 'poly']
 }
 
@@ -72,4 +72,4 @@ results_df = pd.DataFrame(results)
 results_df = results_df.sort_values(by=['Test R2 Score', 'Test MSE', 'Training Time'],
                                     ascending=[False, True, True])
 
-results_df.to_csv('Grid_Result\svm_evaluation_sorted_results.csv', index=False)
+results_df.to_csv('Grid_Result\SVR_evaluation_sorted_results.csv', index=False)

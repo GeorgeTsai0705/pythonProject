@@ -18,7 +18,7 @@ def load_data():
     Y_result = c_pass_result.iloc[3, 1:].values.ravel()
     return X_data, Y_result
 
-def apply_pca(X_train, X_test, n_components=10):
+def apply_pca(X_train, X_test, n_components=5):
     pca = PCA(n_components=n_components)
     X_train_pca = pca.fit_transform(X_train)
     X_test_pca = pca.transform(X_test)
@@ -56,10 +56,12 @@ def save_to_csv(name, result):
     Save the Predicted and Actual results to a CSV.
     """
     df = pd.DataFrame({
+        "Indices": result["Indices"],  # Add this line
         "Actual": result["Actual"],
         "Predicted": result["Predicted"]
     })
     df.to_csv(f"Grid_result/best_results_{name}.csv", index=False)
+
 
 # Define parameters for the models
 MODEL_PARAMS = {
@@ -69,11 +71,11 @@ MODEL_PARAMS = {
         'kernel': 'rbf'
     },
     "RandomForestRegressor": {
-        'n_estimators': 15,
-        'max_depth': None,
+        'n_estimators': 2,
+        'max_depth': 6,
         'min_samples_split': 2,
-        'min_samples_leaf': 1,
-        'bootstrap': False
+        'min_samples_leaf': 2,
+        'bootstrap': True
     },
     "MLPRegressor": {
         'hidden_layer_sizes': (3,),
@@ -93,8 +95,8 @@ best_results = {
     "MLPRegressor": {"MSE": float("inf"), "Time": float("inf"), "R2": -float("inf")}
 }
 
-for i in range(10):
-    X_train, X_test, y_train, y_test = train_test_split(X_data, Y_result, test_size=0.2, random_state=i)
+for i in range(120):
+    X_train, X_test, y_train, y_test, idx_train, idx_test = train_test_split(X_data, Y_result, np.arange(len(Y_result)), test_size=0.2, random_state=47)
     X_train_pca, X_test_pca = apply_pca(X_train, X_test)
 
     for name, params in MODEL_PARAMS.items():
@@ -110,7 +112,7 @@ for i in range(10):
         r2 = r2_score(y_test, y_pred)
         elapsed_time = end_time - start_time
 
-        print(f"Data Split {i + 1}, Model {name}: MSE: {mse}, R2 Score: {r2}, Time: {elapsed_time} seconds")
+        #print(f"Data Split {i + 1}, Model {name}: MSE: {mse}, R2 Score: {r2}, Time: {elapsed_time} seconds")
 
         if mse < best_results[name]["MSE"]:
             best_results[name] = {
@@ -118,10 +120,11 @@ for i in range(10):
                 "Time": elapsed_time,
                 "R2": r2,
                 "Predicted": y_pred,
-                "Actual": y_test
+                "Actual": y_test,
+                "Indices": idx_test  # Add this line to store the original indices
             }
 
 for name, result in best_results.items():
-    print(f"Best Results for {name}: MSE: {result['MSE']}, Time: {result['Time']} seconds, R2 Score: {result['R2']}")
+    print(f"Best Results for {name}: MSE: {result['MSE']:.3f}, Time: {result['Time']:.6f} seconds, R2 Score: {result['R2']:.3f}")
     plot_predictions_vs_actual(result["Actual"], result["Predicted"], name)
     save_to_csv(name, result)
