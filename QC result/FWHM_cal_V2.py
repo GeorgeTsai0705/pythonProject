@@ -106,8 +106,8 @@ def perform_fitting():
     canvas_fit.draw()
 
     FWHM_convert = [(coefficients[1] + coefficients[0] * peak * 2) * fwhm for peak, fwhm in zip(peaks, fwhm_values)]
-
-    update_table_with_fwhm_nm(results_table, peaks, fwhm_values, FWHM_convert)
+    real_wavelength = [x*x*coefficients[0] + x*coefficients[1] + coefficients[2] for x in peaks]
+    update_table_with_fwhm_nm(results_table, peaks, real_wavelength, FWHM_convert)
 
     return FWHM_convert
 
@@ -136,13 +136,6 @@ def create_table(parent):
 
     return tree
 
-def update_table(table, peaks, fwhm_values):
-    for i in table.get_children():
-        table.delete(i)
-
-    for peak, fwhm in zip(peaks, fwhm_values):
-        table.insert('', 'end', values=(peak, fwhm))
-
 def update_plot_and_results(Spectrum):
     width = round(float(width_scale.get()), 1)
     prominence = round(float(prominence_scale.get()), 1)
@@ -155,8 +148,6 @@ def update_plot_and_results(Spectrum):
     ax.set_xlabel('Pixel')
     ax.set_ylabel('Intensity')
     canvas.draw()
-
-    update_table(results_table, peaks, fwhm_values)
 
 def update_width(event):
     update_plot_and_results(Spectrum)
@@ -211,8 +202,39 @@ def cubic_fitting():
     ax_fit.legend()
     canvas_fit.draw()
 
-    FWHM_convert = [(best_coefficients[2] + best_coefficients[1] * peak * 2 + 3 * best_coefficients[0] * peak ** 2) * fwhm for peak, fwhm in zip(peaks, fwhm_values)]
+    FWHM_convert = [(best_coefficients[1] + best_coefficients[0] * peak * 2 ) * fwhm for peak, fwhm in zip(peaks, fwhm_values)]
     update_table_with_fwhm_nm(results_table, peaks, best_comb, FWHM_convert)
+    evaluate_peaks(FWHM_convert, best_comb)
+
+def evaluate_peaks(fwhm_convert, peaks):
+    selected_peaks = [406.15, 436.00, 545.79, 578.60, 696.56, 763.56, 811.48, 842.33, 912.38]
+    selected_indices = [i for i, peak in enumerate(peaks) if peak in selected_peaks]
+
+    fwhm_selected = [fwhm_convert[i] for i in selected_indices]
+    fwhm_avg = np.mean(fwhm_selected)
+    fwhm_std = np.std(fwhm_selected)
+
+    result_text = f"Selected Peaks FWHM(nm):\nAverage: {fwhm_avg:.2f}\nSTD: {fwhm_std:.2f}"
+    copy_test = f"{fwhm_avg:.2f}\t{fwhm_std:.2f}"
+    show_result_window(result_text, copy_test)
+
+def show_result_window(result_text, copy_test):
+    result_window = tk.Toplevel()
+    result_window.title("Evaluation Results")
+
+    result_label = tk.Label(result_window, text=result_text, justify='left')
+    result_label.pack(padx=10, pady=10)
+
+    result_entry = tk.Entry(result_window, width=40)
+    result_entry.pack(padx=10, pady=10)
+    result_entry.insert(0, copy_test)
+    def copy_to_clipboard():
+        result_window.clipboard_clear()  # 清除剪贴板内容
+        result_window.clipboard_append(copy_test)  # 复制新的内容到剪贴板
+
+    copy_button = tk.Button(result_window, text="Copy", command=copy_to_clipboard)
+    copy_button.pack(pady=5)
+
 
 root = tk.Tk()
 root.title("可讀性程式")
@@ -265,7 +287,7 @@ height_entry.pack(side=tk.LEFT, padx=5, pady=5)
 switch_frame = tk.Frame(left_frame)
 switch_frame.pack()
 
-names = ['365', '405', '436', '545', '578', '696', '706', '727', '738', '750', '763', '772', '794', '800', '811', '826',
+names = ['365', '406', '436', '545', '578', '696', '706', '727', '738', '750', '763', '772', '794', '800', '811', '826',
          '842', '852', '866', '912', '922']
 
 names1 = names[:11]
