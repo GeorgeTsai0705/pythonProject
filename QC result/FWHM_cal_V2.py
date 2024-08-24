@@ -1,4 +1,5 @@
 import sys
+import os
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
@@ -10,6 +11,7 @@ from scipy.signal import find_peaks
 from itertools import combinations
 
 Spectrum = np.array([1, 2, 3, 4, 5])  # 設定預設值
+file_name = ''
 Standard_Wavelength = np.array([365.34, 406.15, 436.00, 545.79, 578.60, 696.56, 706.58, 727.17,
                                 738.34, 750.66, 763.56, 772.34, 794.56, 800.98, 811.48, 826.63,
                                 842.33, 852.20, 866.79, 912.38, 922.18])
@@ -64,7 +66,9 @@ def calculate_fwhm(spectrum, width, prominence, height):
 
 def open_file():
     global Spectrum
+    global file_name
     filename = filedialog.askopenfilename(filetypes=[('Text Files', '*.txt')])
+    file_path, file_name = os.path.split(filename)
     if filename:
         Spectrum = read_numeric_data(filename)
         Spectrum = Spectrum - np.average(Spectrum[0:50])
@@ -187,9 +191,10 @@ def cubic_fitting():
             best_coefficients = coefficients
             best_comb = comb
 
-    if best_r2 > 0.9995:
+    if best_r2 > 0.9997:
         fitting_label.config(
             text=f"Fitting Curve Equation: {best_fit}\nR²: {best_r2:.4f}\nCoefficients: {best_coefficients}")
+        print(f"{file_name}\n Coefficients: {best_coefficients}")
     else:
         fitting_label.config(text="無法達到 R2=0.9995 的擬合")
 
@@ -229,8 +234,8 @@ def show_result_window(result_text, copy_test):
     result_entry.pack(padx=10, pady=10)
     result_entry.insert(0, copy_test)
     def copy_to_clipboard():
-        result_window.clipboard_clear()  # 清除剪贴板内容
-        result_window.clipboard_append(copy_test)  # 复制新的内容到剪贴板
+        result_window.clipboard_clear()
+        result_window.clipboard_append(copy_test)
 
     copy_button = tk.Button(result_window, text="Copy", command=copy_to_clipboard)
     copy_button.pack(pady=5)
