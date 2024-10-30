@@ -60,7 +60,7 @@ def calculate_fwhm(spectrum, width, prominence, height):
         height_value = None  # 如果輸入無效，則使用 None
 
     # 尋找峰值位置
-    peaks, _ = find_peaks(spectrum[0:1000], width=width, prominence=prominence, height=height_value, distance=6)
+    peaks, _ = find_peaks(spectrum[0:1240], width=width, prominence=prominence, height=height_value, distance=6)
 
     # 計算每個峰值的半高全寬
     fwhm_values = []

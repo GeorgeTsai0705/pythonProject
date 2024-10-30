@@ -23,6 +23,7 @@ def read_numeric_data(filename):
 
     with open(filename, 'r') as file:
         first_line = file.readline().strip().split()
+        print(first_line)
         if any(element.isalpha() for element in first_line):
             has_header = True
             if "Intensity" in first_line:
