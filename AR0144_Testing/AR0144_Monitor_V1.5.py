@@ -88,6 +88,7 @@ class DeviceController:
 
         # Check the result and process
         if result == 0:  # Assuming 0 indicates success
+            print(bytes(buffer[:data_length.value]))
             read_data = bytes(buffer[:data_length.value]).decode('utf-8')
             cleaned_data = re.sub(r'[\x00\r]', '', read_data)
             logging.info(f'Cleaned Data: {cleaned_data}')
