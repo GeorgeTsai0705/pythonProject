@@ -1,3 +1,4 @@
+import re
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, font
 import tkinter.simpledialog as simpledialog
@@ -87,14 +88,13 @@ class DeviceController:
 
         # Check the result and process
         if result == 0:  # Assuming 0 indicates success
-            read_data = bytes(buffer[:data_length.value])
-            cleaned_data = read_data.replace(b'\x00', b'').rstrip(b'\xff')
-            final_string = cleaned_data.decode('utf-8')
-            logging.info(f'Cleaned Data: {final_string}')
+            read_data = bytes(buffer[:data_length.value]).decode('utf-8')
+            cleaned_data = re.sub(r'[\x00\r]', '', read_data)
+            logging.info(f'Cleaned Data: {cleaned_data}')
 
             # Parse JSON data
             try:
-                json_data = json.loads(final_string)
+                json_data = json.loads(cleaned_data)
                 self.apply_device_settings(json_data)
             except json.JSONDecodeError as e:
                 logging.warning(f'JSONDecodeError: {e}. Using default settings.')
@@ -803,6 +803,7 @@ class App:
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.plot_frame)
         self.widget = self.canvas.get_tk_widget()
         self.widget.pack(fill=tk.BOTH, expand=True)
+        self.line, = self.ax.plot([], [], lw=1)
 
     def update(self):
         if self.connected and self.cap is not None:
@@ -828,7 +829,7 @@ class App:
                 self.analyze_roi(result, self.device_controller.ROI, self.rows_number)
         else:
             self.camera_frame.config(image='')
-            self.ax.clear()
+            #self.ax.clear()
             self.canvas.draw()
 
         self.window.after(self.delay, self.update)
@@ -884,15 +885,13 @@ class App:
         self.draw_plot(roi_avg)
 
     def draw_plot(self, data):
-        # Clear the previous data
-        self.ax.clear()
 
         # Plot new data
         if self.baseline_correction.get():
             data = data - np.average(data[0:100])
 
         x_axis = self.device_controller.x_axis_wavelength if self.x_axis_option.get() == "Wavelength" else self.device_controller.x_axis_pixel
-        self.ax.plot(x_axis, data)
+        self.line.set_data(x_axis, data)
 
         x_min = self.safe_get_float(self.x_axis_min_var, 0)
         x_max = self.safe_get_float(self.x_axis_max_var, 1280)
@@ -900,6 +899,7 @@ class App:
 
         self.ax.set_ylim([0, 4100])  # Set y-axis limits
         self.ax.set_title("Real-time Spectrum")
+
         xlabel = "Wavelength (nm)" if self.x_axis_option.get() == "Wavelength" else "Pixel"
         self.ax.set_xlabel(xlabel)
         self.ax.set_ylabel("Intensity (a.u.)")
